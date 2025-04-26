@@ -57,4 +57,14 @@ return {
       'nvim-lua/plenary.nvim',
     },
   },
+  -- A clipboard manager for nvim, to yank as much as you want
+  {
+    'AckslD/nvim-neoclip.lua',
+    dependencies = {
+      { 'nvim-telescope/telescope.nvim' },
+    },
+    config = function()
+      require('neoclip').setup()
+    end,
+  },
 }
