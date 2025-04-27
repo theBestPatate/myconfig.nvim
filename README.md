@@ -12,7 +12,7 @@ You may find interesting stuff regardless in my config files. Happy hacking !
 ## NixOs specific
 ### Marksman doesn't work ?
 
-If you're using Nix,you're used to things not working. Marksman doesn't work out of the gate and if you read the logs you may see something related to icu-lib ...
+If you're using Nix,you're used to things not working. Marksman doesn't work out of the box and if you read the logs you may see something related to icu-lib ...
 
 Assuming you have Marksman installed, adding this to your nix config should fix it.
 ```nix
