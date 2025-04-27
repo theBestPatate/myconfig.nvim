@@ -10,4 +10,5 @@ return {
       indent = { char = '│' },
     },
   },
+  { 'jpalardy/vim-slime', enabled = true },
 }
