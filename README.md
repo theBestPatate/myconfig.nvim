@@ -29,4 +29,7 @@ Assuming you have Marksman installed, adding this to your nix config should fix 
 
 Vim-Slime is an amazing plugin that allows you to send text from a vim buffer to an other window / shell / ...
 I use it mainly with R and Python, writing the code in the Vim buffer and sending it to an interactive console like ipython(python) or Radian(R).
+The thing is , the Vim-Slime project started around 2007 in pure vim-script, we're in 2025 when I'm writing this, and blink.nvim doesn't work with it. 
+Well, to be fair,you can still make it work, the tab completion for the target buffer, (in my case the tmux one), is just buggy.
 
+A more modern option is molten.nvim but the installation process is less straight forward.
