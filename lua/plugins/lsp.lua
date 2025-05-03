@@ -217,6 +217,7 @@ return {
       local servers = {
         -- clangd = {},
         -- gopls = {},
+        tinymist = {},
         pyright = {},
         bashls = {},
         -- rust_analyzer = {},
@@ -261,6 +262,9 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'tinymist',
+        'pyright',
+        'bashls',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
