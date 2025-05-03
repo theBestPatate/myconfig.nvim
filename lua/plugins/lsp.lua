@@ -218,6 +218,7 @@ return {
         -- clangd = {},
         -- gopls = {},
         tinymist = {},
+        marksman = {},
         pyright = {},
         bashls = {},
         -- rust_analyzer = {},
@@ -265,6 +266,7 @@ return {
         'tinymist',
         'pyright',
         'bashls',
+        'marksman',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
