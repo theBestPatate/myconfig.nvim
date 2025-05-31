@@ -20,4 +20,14 @@ return {
       vim.cmd.colorscheme 'tokyonight-night'
     end,
   },
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    enabled = true,
+    config = function()
+      require('lualine').setup {
+        theme = 'auto',
+      }
+    end,
+  },
 }
