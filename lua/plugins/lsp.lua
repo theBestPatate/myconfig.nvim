@@ -33,6 +33,9 @@ return {
           'SmiteshP/nvim-navic',
           'MunifTanjim/nui.nvim',
         },
+        keys = {
+          { '<leader>ls', ':Navbuddy<cr>', desc = '[L]iSt [S]ymbols' },
+        },
         opts = { lsp = { auto_attach = true } },
       },
     },
