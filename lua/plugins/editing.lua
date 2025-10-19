@@ -25,13 +25,6 @@ return {
   { -- format PYTHON because it's ANNOYING
     'Vimjas/vim-python-pep8-indent',
   },
-  { -- generate docstrings
-    'danymat/neogen',
-    cmd = { 'Neogen' },
-    dependencies = 'nvim-treesitter/nvim-treesitter',
-    config = true,
-  },
-
   {
     'chrishrb/gx.nvim',
     enabled = true,

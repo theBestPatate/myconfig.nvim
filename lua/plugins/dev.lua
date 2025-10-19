@@ -73,5 +73,11 @@ return {
       'sindrets/diffview.nvim', -- optional - Diff integration
       'nvim-telescope/telescope.nvim', -- optional
     },
+    { -- generate docstrings
+      'danymat/neogen',
+      cmd = { 'Neogen' },
+      dependencies = 'nvim-treesitter/nvim-treesitter',
+      config = true,
+    },
   },
 }
