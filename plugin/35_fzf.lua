@@ -2,6 +2,9 @@ local later = Config.later
 local nmap_leader = function(suf, rhs, desc)
 	vim.keymap.set("n", "<Leader>" .. suf, rhs, { desc = desc })
 end
+local vmap_leader = function(suf, rhs, desc)
+	vim.keymap.set("v", "<Leader>" .. suf, rhs, { desc = desc })
+end
 
 later(function()
 	vim.pack.add({ "https://github.com/ibhagwan/fzf-lua" })
@@ -45,12 +48,37 @@ later(function()
 	end
 
 	require("fzf-lua").setup({
-		fzf_opts = {
-			["--preview-window"] = "right:60%:wrap",
-		},
 		defaults = {
 			file_icons = true,
 			git_icons = true,
+		},
+		winopts = {
+			width = 0.90,
+			height = 0.85,
+			preview = {
+				horizontal = "right:65%",
+				title = true,
+			},
+		},
+		keymap = {
+			builtin = {
+				true, -- inherit all defaults
+				["<C-d>"] = "preview-page-down",
+				["<C-u>"] = "preview-page-up",
+				["<S-down>"] = false,
+				["<S-up>"] = false,
+				["<M-S-down>"] = false,
+				["<M-S-up>"] = false,
+			},
+			fzf = {
+				true, -- inherit all defaults
+				["ctrl-d"] = "preview-page-down",
+				["ctrl-u"] = "preview-page-up",
+				["shift-down"] = false,
+				["shift-up"] = false,
+				["alt-shift-down"] = false,
+				["alt-shift-up"] = false,
+			},
 		},
 		files = {
 			-- Use fd but ignore .gitignore — we use our own exclude list
@@ -69,15 +97,46 @@ later(function()
 		fzf.files({ cwd = vim.fn.getcwd() })
 	end, "Files")
 
+	-- Helper: save visual selection, run fzf action, extend selection on return
+	local function with_visual_restore(fzf_action)
+		local start_pos = vim.fn.getpos("v")
+		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "x", false)
+
+		local function restore_visual()
+			vim.fn.setpos("'<", start_pos)
+			vim.fn.setpos("'>", vim.fn.getpos("."))
+			vim.cmd("normal! gv")
+		end
+
+		local orig_buf = vim.api.nvim_get_current_buf()
+		vim.api.nvim_create_autocmd("BufEnter", {
+			group = vim.api.nvim_create_augroup("fzf-visual", {}),
+			callback = function(args)
+				if args.buf == orig_buf then
+					vim.api.nvim_del_augroup_by_name("fzf-visual")
+					vim.schedule(restore_visual)
+				end
+			end,
+		})
+
+		fzf_action()
+	end
+
 	-- Live grep
 	nmap_leader("fg", function()
 		fzf.live_grep()
+	end, "Grep")
+	vmap_leader("fg", function()
+		with_visual_restore(function() fzf.live_grep() end)
 	end, "Grep")
 
 	-- Grep word under cursor
 	nmap_leader("fw", function()
 		fzf.grep_cword()
 	end, "Grep word")
+	vmap_leader("fw", function()
+		with_visual_restore(function() fzf.grep_visual() end)
+	end, "Grep selection")
 
 	-- Buffers
 	nmap_leader("fb", function()

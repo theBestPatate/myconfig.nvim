@@ -66,7 +66,6 @@ later(function()
 			{ mode = { "n", "x" }, keys = '"' },
 			{ mode = { "i", "c" }, keys = "<C-r>" },
 			{ mode = "n", keys = "<C-w>" },
-			{ mode = { "n", "x" }, keys = "s" },
 			{ mode = { "n", "x" }, keys = "z" },
 		},
 	})
