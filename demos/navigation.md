@@ -4,7 +4,7 @@
 > `:set ft=markdown`
 >
 > Press `<Space>` and wait — mini.clue shows all available groups.
-> `<Leader>f` = Find, `<Leader>s` = Flash/Search, `<Leader>e` = Explore.
+> `<Leader>f` = Find, `<Leader>s` = Flash/Search.
 
 ---
 
@@ -93,7 +93,7 @@ Press `<Leader>f` and mini.clue shows all available find commands.
 ┌───────────────────────────────────┐  ┌──────────────────┐
 │  Search query...                  │  │                  │
 ├───────────────────────────────────┤  │   File Preview   │
-│  header: <A-h> <A-i> <A-f>       │  │   (auto-scrolls) │
+│  header: <A-h> <A-i> <A-f>        │  │   (auto-scrolls) │
 │  plugin/35_fzf.lua          [24]  │  │                  │
 │  plugin/20_editor.lua       [226] │  │   1  local ...   │
 │  plugin/10_ui.lua           [77]  │  │   2  local ...   │
@@ -157,7 +157,8 @@ definitions matching that pattern, with file path and line number.
 
 ### `<Leader>fw` — Grep Word Under Cursor
 
-Search the project for the word under your cursor. No need to type it.
+Search the project for the word under cursor (normal) or selected text (visual).
+In visual mode, the selection extends to the match — same as `<Leader>fg`.
 
 **Try it**: Place your cursor on `DataProcessor` somewhere on this page, press `<Leader>fw`.
 
@@ -206,52 +207,6 @@ Quick way to return to a file without navigating your project tree.
 Lists all files tracked by Git in the current repository.
 Excludes `.gitignore`-d files automatically via fzf-lua's internal filtering.
 
-### `<Leader>fs` — Git Status
-
-Shows changed files (staged, unstaged, untracked) with a preview.
-Select a file to open it, or use `<Tab>` to stage/unstage directly.
-
----
-
-## 3. oil.nvim — File Browser
-
-oil.nvim replaces `netrw` with a fully-editable directory buffer.
-Treat your file tree like any other buffer: rename, delete, move with standard vim keys.
-
-### `<Leader>ed` — Open Current Directory
-
-**Try it**: Press `<Leader>ed`. You'll see the contents of the directory where
-`navigation.md` lives. Navigate with `j`/`k`, open files with `<CR>`, go up
-with `-` on the `../` entry.
-
-<!--DEMO
-{
-  "steps": [
-    {"desc": "Open Oil file browser", "keys": "<Leader>ed", "pause": 2.0},
-    {"desc": "Navigate and go up a directory", "keys": "k-", "pause": 2.0},
-    {"desc": "Return to this file", "keys": "<C-^>", "pause": 1.5}
-  ]
-}
--->
-
-### `<Leader>eD` — Open Parent Directory
-
-Opens oil in the parent of the current file's directory. Useful when you realize
-you need a sibling of the current file.
-
-### Oil Keybindings (inside an oil buffer)
-
-| Key | Action |
-|-----|--------|
-| `<CR>` | Open file / enter directory |
-| `-` | Go to parent directory |
-| `~` | Go to `$HOME` |
-| `R` | Rename file/directory under cursor |
-| `dd` | Delete file/directory (moves to trash) |
-| `yy` | Copy file/directory |
-| `p` | Paste copied file |
-| `:w` | Save changes (renames, moves, etc. take effect) |
-
 ---
 
 ## Quick Reference
@@ -270,18 +225,12 @@ you need a sibling of the current file.
 |-----|--------|
 | `ff` | Find files |
 | `fg` | Live grep (visual: extends selection to match) |
-| `fw` | Grep word under cursor |
+| `fw` | Grep word (visual: extends selection to match) |
 | `fb` | Buffer switcher |
 | `fr` | Resume last search |
 | `fh` | Help tags |
 | `fc` | Command palette |
 | `fo` | Recent files |
 | `fG` | Git files |
-| `fs` | Git status |
 
-### oil.nvim (`<Leader>e`)
 
-| Key | Action |
-|-----|--------|
-| `ed` | Open directory |
-| `eD` | Open parent directory |

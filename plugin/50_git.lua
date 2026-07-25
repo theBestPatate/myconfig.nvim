@@ -16,8 +16,7 @@ later(function()
 		},
 	})
 
-	-- Mini Git / Diff
-	require("mini.git").setup()
+	-- Mini Diff
 	require("mini.diff").setup()
 
 	-- Hunk navigation
@@ -32,9 +31,5 @@ later(function()
 		return "<Ignore>"
 	end, { expr = true, desc = "Previous git hunk" })
 
-	nmap_leader("ga", "<Cmd>Git diff --cached<CR>", "Added diff")
-	nmap_leader("gc", "<Cmd>Git commit<CR>", "Commit")
-	nmap_leader("gd", "<Cmd>Git diff<CR>", "Diff")
 	nmap_leader("go", "<Cmd>lua MiniDiff.toggle_overlay()<CR>", "Toggle overlay")
-	nmap_leader("gs", "<Cmd>lua MiniGit.show_at_cursor()<CR>", "Show at cursor")
 end)

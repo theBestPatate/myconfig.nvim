@@ -1,14 +1,10 @@
-local now_if_args, later = Config.now_if_args, Config.later
-local nmap_leader = function(suf, rhs, desc)
-	vim.keymap.set("n", "<Leader>" .. suf, rhs, { desc = desc })
-end
+local now_if_args = Config.now_if_args
 
-vim.pack.add({
-	"https://github.com/stevearc/oil.nvim",
-})
+-- oil.nvim: directory-as-buffer file manager.
+-- No leader keybindings — use fzf-lua (<Leader>ff) for navigation.
+-- Open oil manually with :Oil or edit a directory path.
+vim.pack.add({ "https://github.com/stevearc/oil.nvim" })
+
 now_if_args(function()
 	require("oil").setup()
-	--
-	nmap_leader("ed", "<Cmd>Oil<CR>", "Directory")
-	nmap_leader("eD", "<Cmd>Oil ..", "Directory above")
 end)

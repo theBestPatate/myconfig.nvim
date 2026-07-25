@@ -170,6 +170,12 @@ later(function()
 
 	-- Git status
 	nmap_leader("fs", function()
-		fzf.git_status()
+		fzf.git_status({
+			actions = {
+				["tab"]   = { fn = require("fzf-lua").actions.git_stage_unstage, reload = true },
+				["left"]  = false,
+				["right"] = false,
+			},
+		})
 	end, "Git status")
 end)
