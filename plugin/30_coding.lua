@@ -69,9 +69,10 @@ now_if_args(function()
 
 	require("mason").setup()
 
-	-- Native Neovim 0.12: Enable servers.
-	-- This automatically reads configuration from `after/lsp/<server>.lua`
-	local servers = {
+	-- Server configs (merged with nvim-lspconfig defaults via vim.lsp.config)
+	-- Custom configs are loaded from after/lsp/<name>.lua, defaults use {}
+	local servers = {}
+	for _, name in ipairs({
 		"lua_ls",
 		"stylua",
 		"tinymist",
@@ -80,10 +81,18 @@ now_if_args(function()
 		"oxlint",
 		"superhtml",
 		"ty",
-	}
+	}) do
+		local cfg = {}
+		local cfg_file = vim.fn.stdpath("config") .. "/after/lsp/" .. name .. ".lua"
+		if vim.uv.fs_stat(cfg_file) then
+			cfg = dofile(cfg_file)
+		end
+		servers[name] = cfg
+	end
 
-	for _, lsp in ipairs(servers) do
-		vim.lsp.enable(lsp)
+	for name, cfg in pairs(servers) do
+		vim.lsp.config(name, cfg)
+		vim.lsp.enable(name)
 	end
 
 	-- LSP Keymaps

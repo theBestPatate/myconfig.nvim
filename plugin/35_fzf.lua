@@ -97,7 +97,11 @@ later(function()
 		fzf.files({ cwd = vim.fn.getcwd() })
 	end, "Files")
 
-	-- Helper: save visual selection, run fzf action, extend selection on return
+	---Save visual selection anchor, run fzf-lua, then extend the selection
+	---to the cursor position when returning to the original buffer.
+	---Replicates `/` behavior: start selection, search, jump, selection
+	---automatically grows to include the match.
+	---@param fzf_action function  fzf-lua action to run (e.g. fzf.live_grep)
 	local function with_visual_restore(fzf_action)
 		local start_pos = vim.fn.getpos("v")
 		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "x", false)

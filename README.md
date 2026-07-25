@@ -53,9 +53,18 @@ auto-installed on first use.
 
 | Tool | Language | Install |
 |------|----------|---------|
-| `black` + `isort` | Python | `pip install black isort` |
+| `black` + `isort` | Python | `uv tool install black isort` |
 | `prettierd` | HTML, CSS, JS, TS, JSX, TSX | `npm install -g @fsouza/prettierd` |
-| `csharpier` | C# | `dotnet tool install -g csharpier` |
+
+Install commands:
+
+```bash
+# Python formatters (available globally via uv)
+uv tool install black isort
+
+# Web formatter (available globally via npm)
+npm install -g @fsouza/prettierd
+```
 
 Formatting runs on save automatically. Disable it per-buffer with `<Leader>cf`,
 globally with `<Leader>cF`.

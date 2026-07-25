@@ -1,6 +1,11 @@
 -- General
 vim.g.mapleader = " "
 vim.o.confirm = true
+
+-- Disable unused providers (silence checkhealth warnings)
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
 vim.o.mouse = "a"
 vim.o.mousescroll = "ver:25,hor:6"
 vim.o.switchbuf = "usetab"
@@ -35,6 +40,7 @@ vim.o.wrap = false
 vim.o.cursorlineopt = "screenline,number"
 vim.o.fillchars = "eob: ,fold:╌"
 vim.o.listchars = 'extends:…,nbsp:␣,precedes:…,tab:| '
+---@diagnostic disable-next-line: unicode-name
 vim.o.showbreak=↪ 
 
 -- Folds

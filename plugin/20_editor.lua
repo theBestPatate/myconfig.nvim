@@ -17,9 +17,16 @@ later(function()
 	MiniKeymap.map_multistep("i", "<CR>", { "pmenu_accept", "minipairs_cr" })
 	MiniKeymap.map_multistep("i", "<BS>", { "minipairs_bs" })
 
-	-- Swap arguments left/right
-	vim.keymap.set("n", "(", "gxiagxila", { remap = true, desc = "Swap arg left" })
-	vim.keymap.set("n", ")", "gxiagxina", { remap = true, desc = "Swap arg right" })
+	-- Swap arguments left/right (via treesitter-textobjects swap)
+	-- Must be inside a treesitter-enabled buffer to work
+	vim.keymap.set("n", "(", function()
+		local ok, swap = pcall(require, "nvim-treesitter-textobjects.swap")
+		if ok then swap.swap_previous("@parameter.inner") end
+	end, { desc = "Swap arg left" })
+	vim.keymap.set("n", ")", function()
+		local ok, swap = pcall(require, "nvim-treesitter-textobjects.swap")
+		if ok then swap.swap_next("@parameter.inner") end
+	end, { desc = "Swap arg right" })
 end)
 
 vim.api.nvim_create_autocmd("FileType", {
@@ -167,13 +174,12 @@ later(function()
 		end,
 		formatters_by_ft = {
 			python = { "black", "isort" },
-			html = { "prettierd", "prettier", stop_after_first = true },
-			javascript = { "prettierd", "prettier", stop_after_first = true },
-			typescript = { "prettierd", "prettier", stop_after_first = true },
-			typescriptreact = { "prettierd", "prettier", stop_after_first = true },
-			javascriptreact = { "prettierd", "prettier", stop_after_first = true },
-			css = { "prettierd", "prettier", stop_after_first = true },
-			cs = { "csharpier" },
+			html = { "prettierd" },
+			javascript = { "prettierd" },
+			typescript = { "prettierd" },
+			typescriptreact = { "prettierd" },
+			javascriptreact = { "prettierd" },
+			css = { "prettierd" },
 		},
 	})
 

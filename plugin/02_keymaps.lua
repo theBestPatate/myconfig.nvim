@@ -1,9 +1,23 @@
+---Set a normal-mode keymap with a description.
+---@param lhs  string  Left-hand side (key sequence)
+---@param rhs  string|function  Right-hand side (command or callback)
+---@param desc string  Human-readable description
 local nmap = function(lhs, rhs, desc)
 	vim.keymap.set("n", lhs, rhs, { desc = desc })
 end
+
+---Set a leader-prefixed normal-mode keymap.
+---@param suf  string  Suffix after <Leader> (e.g. 'ff' for <Leader>ff)
+---@param rhs  string|function
+---@param desc string
 local nmap_leader = function(suf, rhs, desc)
 	vim.keymap.set("n", "<Leader>" .. suf, rhs, { desc = desc })
 end
+
+---Set a leader-prefixed visual-mode keymap.
+---@param suf  string  Suffix after <Leader>
+---@param rhs  string|function
+---@param desc string
 local xmap_leader = function(suf, rhs, desc)
 	vim.keymap.set("x", "<Leader>" .. suf, rhs, { desc = desc })
 end

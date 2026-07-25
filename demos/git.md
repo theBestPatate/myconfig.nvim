@@ -10,15 +10,43 @@
 ## 1. Gitsigns — Gutter Signs & Hunk Navigation
 
 Gitsigns shows `+`, `~`, `_` in the sign column for added, changed, and deleted lines.
-It also provides hunk-level operations.
+
+### What Are Hunks?
+
+A **hunk** is a contiguous block of changed lines in a file — the same thing you
+see in `git diff` output. If you edited 3 separate functions in a file, you have
+3 hunks. Gitsigns lets you jump between them instantly.
+
+```
+  10  def unchanged_function():         ← unchanged code
+  11      pass
++ 12  def newly_added():                ┐
++ 13      return "hello"                │ hunk #1 (addition)
+  14                                    ┘
+~ 15  def modified_function():          ┐
+~ 16      old_name = "x"                 │ hunk #2 (modification)
++ 17      new_name = "y"                 │
+  18                                    ┘
+_ 19  def old_function():               ┐
+_ 20      pass                           │ hunk #3 (deletion)
+  21                                    ┘
+  22  def other_unchanged():            ← unchanged code
+```
 
 ### `]h` / `[h` — Jump Between Hunks
 
-Jump to the next or previous git hunk in the current file. Works like `]d` / `[d`
-for diagnostics, but for git changes.
+| Key | Action |
+|-----|--------|
+| `]h` | Jump to the **next** hunk below the cursor |
+| `[h` | Jump to the **previous** hunk above the cursor |
 
-**Try it**: Open a file with unstaged changes, press `]h` to jump to the first hunk,
-`[h` to go back.
+Mnemonic: `]` = forward, `[` = backward, `h` = **h**unk (same pattern as `]d` for
+diagnostics, `]m` for functions).
+
+**Why this is useful**: Instead of scrolling through a long file hunting for
+your edits, `]h` takes you straight to each change in order. Before committing,
+quickly review every hunk with `]h` `]h` `]h` — you'll never miss a stray edit
+or debug print again.
 
 ### Gitsigns Hunk Actions
 
