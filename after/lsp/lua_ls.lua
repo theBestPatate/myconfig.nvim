@@ -1,4 +1,9 @@
 return {
+	-- Disable lua_ls built-in formatting — stylua LSP handles it instead
+	on_init = function(client)
+		client.server_capabilities.documentFormattingProvider = false
+	end,
+
 	-- Explicitly define what constitutes a Lua project root
 	root_dir = function(fname)
 		local lspconfig_util = require("lspconfig.util")

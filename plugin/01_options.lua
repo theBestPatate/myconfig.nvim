@@ -1,5 +1,6 @@
 -- General
 vim.g.mapleader = " "
+vim.o.confirm = true
 vim.o.mouse = "a"
 vim.o.mousescroll = "ver:25,hor:6"
 vim.o.switchbuf = "usetab"

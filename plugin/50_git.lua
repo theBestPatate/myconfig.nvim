@@ -20,6 +20,18 @@ later(function()
 	require("mini.git").setup()
 	require("mini.diff").setup()
 
+	-- Hunk navigation
+	vim.keymap.set("n", "]h", function()
+		if vim.wo.diff then return "]h" end
+		vim.schedule(function() package.loaded.gitsigns.next_hunk() end)
+		return "<Ignore>"
+	end, { expr = true, desc = "Next git hunk" })
+	vim.keymap.set("n", "[h", function()
+		if vim.wo.diff then return "[h" end
+		vim.schedule(function() package.loaded.gitsigns.prev_hunk() end)
+		return "<Ignore>"
+	end, { expr = true, desc = "Previous git hunk" })
+
 	nmap_leader("ga", "<Cmd>Git diff --cached<CR>", "Added diff")
 	nmap_leader("gc", "<Cmd>Git commit<CR>", "Commit")
 	nmap_leader("gd", "<Cmd>Git diff<CR>", "Diff")

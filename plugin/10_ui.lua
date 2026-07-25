@@ -72,6 +72,10 @@ later(function()
 	})
 end)
 later(function()
+	-- nvim-treesitter-context: Show current code context at the top
+	vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter-context" })
+	require("treesitter-context").setup()
+
 	-- Visualize and work with indent scope (the animated vertical line)
 	require("mini.indentscope").setup()
 end)

@@ -11,23 +11,55 @@ now_if_args(function()
 		"https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
 	})
 
-	local languages = { "lua", "vimdoc", "markdown", "python", "rust", "html", "css", "javascript", "typescript" }
+	-- Ensure basic parsers are installed at startup
+	local parsers = { "bash", "c", "diff", "html", "lua", "luadoc", "markdown", "markdown_inline", "query", "vim", "vimdoc" }
+	local installed = require("nvim-treesitter").get_installed("parsers")
 	local to_install = vim.tbl_filter(function(lang)
-		return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) == 0
-	end, languages)
+		return not vim.tbl_contains(installed, lang)
+	end, parsers)
 	if #to_install > 0 then
 		require("nvim-treesitter").install(to_install)
 	end
 
-	local filetypes = {}
-	for _, lang in ipairs(languages) do
-		for _, ft in ipairs(vim.treesitter.language.get_filetypes(lang)) do
-			table.insert(filetypes, ft)
+	-- Attach treesitter to a buffer with indent fallback
+	---@param buf integer
+	---@param language string
+	local function treesitter_try_attach(buf, language)
+		if not vim.treesitter.language.add(language) then return end
+		vim.treesitter.start(buf, language)
+
+		-- Only enable treesitter indent if the language has indent queries;
+		-- otherwise fall back to Vim's built-in indentexpr
+		local has_indent_query = vim.treesitter.query.get(language, "indents") ~= nil
+		if has_indent_query then
+			vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 		end
 	end
-	Config.new_autocmd("FileType", filetypes, function(ev)
-		vim.treesitter.start(ev.buf)
-	end, "Start tree-sitter")
+
+	-- Auto-attach treesitter for any filetype with a parser
+	local available_parsers = require("nvim-treesitter").get_available()
+	vim.api.nvim_create_autocmd("FileType", {
+		group = vim.api.nvim_create_augroup("custom-treesitter", {}),
+		callback = function(args)
+			local buf, filetype = args.buf, args.match
+			local language = vim.treesitter.language.get_lang(filetype)
+			if not language then return end
+
+			local installed_parsers = require("nvim-treesitter").get_installed("parsers")
+			if vim.tbl_contains(installed_parsers, language) then
+				-- Parser already installed: attach immediately
+				treesitter_try_attach(buf, language)
+			elseif vim.tbl_contains(available_parsers, language) then
+				-- Parser available but not installed: auto-install then attach
+				require("nvim-treesitter").install(language):await(function()
+					treesitter_try_attach(buf, language)
+				end)
+			else
+				-- Parser not in nvim-treesitter (e.g. custom): try to attach anyway
+				treesitter_try_attach(buf, language)
+			end
+		end,
+	})
 end)
 
 -- 2. LSP Servers & Mason =====================================================
@@ -41,6 +73,7 @@ now_if_args(function()
 	-- This automatically reads configuration from `after/lsp/<server>.lua`
 	local servers = {
 		"lua_ls",
+		"stylua",
 		"tinymist",
 		"marksman",
 		"vtsls",

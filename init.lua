@@ -1,3 +1,6 @@
+-- Enable Lua module caching for faster startup
+vim.loader.enable()
+
 -- Global Config table for passing data and helpers between files
 _G.Config = {}
 
@@ -25,3 +28,8 @@ Config.on_packchanged = function(plugin_name, kinds, callback, desc)
     callback()
   end, desc)
 end
+
+-- Convenience command to update all plugins
+vim.api.nvim_create_user_command('PackUpdate', function()
+  vim.pack.update()
+end, { desc = 'Update all plugins to latest versions' })
