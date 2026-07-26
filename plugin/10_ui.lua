@@ -9,7 +9,7 @@ now(function()
 end)
 
 now(function()
-	vim.cmd("colorscheme catppuccin-macchiato")
+	vim.cmd("colorscheme chilling-potato")
 end)
 
 now(function()
