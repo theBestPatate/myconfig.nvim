@@ -23,7 +23,7 @@ Some plugins need binaries on your `$PATH`.
 
 | Package | Gentoo | Debian / Ubuntu | Why |
 |---------|--------|-----------------|-----|
-| `fd` | `emerge fd` | `apt install fd-find` | fzf-lua file listing |
+| `fd` | `emerge fd` | `apt install fd-find` (binary is `fdfind`, symlink to `fd`) | fzf-lua file listing |
 | `fzf` | `emerge fzf` | `apt install fzf` | fzf-lua binary |
 | `ripgrep` | `emerge ripgrep` | `apt install ripgrep` | fzf-lua live grep |
 | `node` | `emerge nodejs` | `apt install nodejs` | vtsls LSP (TypeScript) |
@@ -39,7 +39,7 @@ auto-installed on first use.
 | Server | Language | Mason | Extra setup |
 |--------|----------|-------|-------------|
 | `lua_ls` | Lua | auto | — |
-| `stylua` | Lua formatting | auto | — |
+| `stylua` (stylua-lsp) | Lua formatting | auto | — |
 | `tinymist` | Typst | auto | — |
 | `marksman` | Markdown | auto | — |
 | `vtsls` | TypeScript / JavaScript | auto | `npm install -g typescript` recommended |
@@ -155,38 +155,14 @@ These work in **visual** (`v`) and **operator-pending** (`d`, `c`, `y`, ...) mod
 | `ai` / `ii` | Conditional (if/else) |
 | `al` / `il` | Loop (for/while) |
 | `ab` / `ib` | Block |
-| `aA` / `iA` | Function call |
-| `as` | Enclosing scope |
-
-**Move** (also works in operator-pending: `d]m`, `v]M`, etc.):
-
-| Key | Jump to |
-|-----|---------|
-| `]m` / `[m` | Next / prev function start |
-| `]M` / `[M` | Next / prev function end |
-| `]]` / `[[` | Next / prev class start |
-| `][` / `[]` | Next / prev class end |
-| `]o` / `[o` | Next / prev loop |
-| `]i` / `[i` | Next / prev conditional |
-
-### Repeat moves
-
-| Key | Action |
-|-----|--------|
-| `;` | Repeat last move / `f` / `t` forward |
-| `,` | Repeat last move / `f` / `t` backward |
+| `aC` / `iC` | Function call |
 
 ### Other
 
 | Key | Action |
 |-----|--------|
-| `<Leader>or` | Resize window to default |
-| `<Leader>ot` | Trim trailing whitespace |
-| `<Leader>oz` | Zoom toggle |
-| `<Leader>tt` | Terminal (vertical split) |
-| `<Leader>tT` | Terminal (horizontal split) |
 | `[p` / `]p` | Paste above / below |
-| `(` / `)` | Swap argument left / right |
+| `<Leader>a` / `<Leader>A` | Swap argument left / right |
 
 ---
 
@@ -194,11 +170,11 @@ These work in **visual** (`v`) and **operator-pending** (`d`, `c`, `y`, ...) mod
 
 | Plugin | Purpose |
 |--------|---------|
-| [mini.nvim](https://github.com/nvim-mini/mini.nvim) | Core framework — icons, statusline, tabline, completion, snippets, pairs, comment, surround, clue, diff, notify, indentscope, move, splitjoin, align, trailspace, operators, keymap, bufremove, misc |
-| [catppuccin](https://github.com/catppuccin/nvim) | Colorscheme (Macchiato variant) |
+| [mini.nvim](https://github.com/nvim-mini/mini.nvim) | Core framework — icons, tabline, completion, pairs, comment, clue, diff, notify, indentscope, move, splitjoin, align, trailspace, operators, keymap, bufremove, misc |
+| [chilling-potato](https://github.com/theBestPatate/chilling_potato) | Colorscheme |
+| [catppuccin](https://github.com/catppuccin/nvim) | Alternative colorscheme (installed, not active) |
 | [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) | Syntax highlighting, folds, indentation |
 | [nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) | Select, move, swap code by structure |
-| [nvim-treesitter-context](https://github.com/nvim-treesitter/nvim-treesitter-context) | Sticky context at top of window |
 | [conform.nvim](https://github.com/stevearc/conform.nvim) | Autoformatting on save |
 | [flash.nvim](https://github.com/folke/flash.nvim) | Fast in-buffer navigation with labels |
 | [fzf-lua](https://github.com/ibhagwan/fzf-lua) | Fuzzy finder, live grep, buffer switcher, git status |
@@ -207,9 +183,7 @@ These work in **visual** (`v`) and **operator-pending** (`d`, `c`, `y`, ...) mod
 | [zen-mode.nvim](https://github.com/folke/zen-mode.nvim) | Distraction-free editing |
 | [mason.nvim](https://github.com/mason-org/mason.nvim) | LSP server installer |
 | [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) | LSP server configurations |
-| [friendly-snippets](https://github.com/rafamadriz/friendly-snippets) | Pre-made snippet collection |
 | [codediff.nvim](https://github.com/esmuellert/codediff.nvim) | Diff viewer |
-
 | [oil.nvim](https://github.com/stevearc/oil.nvim) | Directory-as-buffer editing (`:Oil`). Keybindings removed — use fzf-lua for file navigation. |
 
 ---
@@ -223,13 +197,11 @@ filetype, and follow along.
 |------|--------|
 | `demos/text_objects.md` | Treesitter select, move, swap, repeat |
 | `demos/navigation.md` | flash.nvim, fzf-lua |
-| `demos/editing.md` | mini.pairs, surround, move, align, operators |
 | `demos/coding.md` | LSP, completion, snippets, conform, codediff |
-| `demos/git.md` | gitsigns, mini.git, mini.diff |
+| `demos/git.md` | gitsigns, mini.diff |
 
-> **Recording demos**: `<!--DEMO-->` blocks inside each file contain JSON
+> **Recording demos**: `<!--DEMO-->` blocks inside most demo files contain JSON
 > steps that can be replayed via `tmux send-keys` to generate GIF previews.
-> See the `scripts/replay.sh` helper.
 
 ---
 
