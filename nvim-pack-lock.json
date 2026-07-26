@@ -4,6 +4,10 @@
       "rev": "79e2049a0fdf7ec840f8463fe1d962c94493196b",
       "src": "https://github.com/catppuccin/nvim"
     },
+    "chilling_potato": {
+      "rev": "22f5219c2746e8cbc8ab81675f184a05aad2d32f",
+      "src": "https://github.com/theBestPatate/chilling_potato.git"
+    },
     "codediff.nvim": {
       "rev": "8bd120d5e02172852e788adde2abc94383cae741",
       "src": "https://github.com/esmuellert/codediff.nvim"
@@ -15,10 +19,6 @@
     "flash.nvim": {
       "rev": "b6346946d10d07998efee029fb0f7a593806d0cd",
       "src": "https://github.com/folke/flash.nvim"
-    },
-    "friendly-snippets": {
-      "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
-      "src": "https://github.com/rafamadriz/friendly-snippets"
     },
     "fzf-lua": {
       "rev": "9ad7340dcc6d2afc30e64fb4088597c7573ed62c",
@@ -39,6 +39,10 @@
     "mini.nvim": {
       "rev": "946ae64e0ee807ae3c41f382f0114b4ed4915b2c",
       "src": "https://github.com/nvim-mini/mini.nvim"
+    },
+    "nvim-colorizer.lua": {
+      "rev": "72a05f62c52241bc7441c820eb53946f92b2e6a4",
+      "src": "https://github.com/catgoose/nvim-colorizer.lua"
     },
     "nvim-lspconfig": {
       "rev": "d592c1e6ad9a0a01b3d5ed3f0345d68407167181",

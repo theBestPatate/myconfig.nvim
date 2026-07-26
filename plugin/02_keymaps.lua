@@ -33,14 +33,9 @@ Config.leader_group_clues = {
 	{ mode = "n", keys = "<Leader>f", desc = "+Find" },
 	{ mode = "n", keys = "<Leader>g", desc = "+Git" },
 	{ mode = "n", keys = "<Leader>l", desc = "+Language" },
-	{ mode = "n", keys = "<Leader>m", desc = "+Map" },
-	{ mode = "n", keys = "<Leader>o", desc = "+Other" },
+	{ mode = "n", keys = "<Leader>o", desc = "+Open" },
 	{ mode = "n", keys = "<Leader>s", desc = "+Flash/Search" },
-	{ mode = "n", keys = "<Leader>t", desc = "+Terminal" },
-	{ mode = "n", keys = "<Leader>v", desc = "+Visits" },
 	{ mode = "x", keys = "<Leader>f", desc = "+Find" },
-	{ mode = "x", keys = "<Leader>g", desc = "+Git" },
-	{ mode = "x", keys = "<Leader>l", desc = "+Language" },
 }
 
 -- Buffers
@@ -61,11 +56,26 @@ nmap_leader("eq", function()
 	vim.cmd(vim.fn.getqflist({ winid = true }).winid ~= 0 and "cclose" or "copen")
 end, "Quickfix")
 
--- Map & UI overrides
-nmap_leader("or", "<Cmd>lua MiniMisc.resize_window()<CR>", "Resize default")
-nmap_leader("ot", "<Cmd>lua MiniTrailspace.trim()<CR>", "Trim trailspace")
-nmap_leader("oz", "<Cmd>lua MiniMisc.zoom()<CR>", "Zoom toggle")
-
--- Terminals
-nmap_leader("tT", "<Cmd>horizontal term<CR>", "Terminal (horizontal)")
-nmap_leader("tt", "<Cmd>vertical term<CR>", "Terminal (vertical)")
+-- Open
+nmap_leader("oc", "<Cmd>CodeBlockEdit<CR>", "Code block")
+nmap_leader("of", function()
+	local file = vim.fn.expand("<cfile>")
+	if file == "" then
+		vim.notify("No file under cursor", vim.log.levels.WARN)
+		return
+	end
+	-- Directory → Oil
+	if vim.fn.isdirectory(file) == 1 then
+		vim.cmd("Oil " .. vim.fn.fnameescape(file))
+		return
+	end
+	local ext = vim.fn.fnamemodify(file, ":e"):lower()
+	local image_exts = { png = true, jpg = true, jpeg = true, gif = true, webp = true, bmp = true }
+	if ext == "pdf" then
+		vim.fn.jobstart({ "zathura", "--fork", file })
+	elseif image_exts[ext] then
+		vim.fn.jobstart({ "feh", file })
+	else
+		vim.cmd("edit " .. vim.fn.fnameescape(file))
+	end
+end, "File under cursor")

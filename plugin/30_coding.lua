@@ -108,20 +108,14 @@ now_if_args(function()
 	nmap_leader("ls", "<Cmd>lua vim.lsp.buf.definition()<CR>", "Source definition")
 end)
 
--- 3. Autocompletion & Snippets ===============================================
+-- 3. Autocompletion =======================================================
 now_if_args(function()
-	vim.pack.add({ "https://github.com/rafamadriz/friendly-snippets" })
-
 	require("mini.completion").setup({
 		lsp_completion = {
 			source_func = "omnifunc",
 			auto_setup = false,
 			process_items = function(items, base)
-				return MiniCompletion.default_process_items(
-					items,
-					base,
-					{ kind_priority = { Text = -1, Snippet = 99 } }
-				)
+				return MiniCompletion.default_process_items(items, base)
 			end,
 		},
 	})
@@ -132,14 +126,6 @@ now_if_args(function()
 
 	-- Globally inject mini.completion capabilities into all LSP servers
 	vim.lsp.config("*", { capabilities = MiniCompletion.get_lsp_capabilities() })
-
-	local snippets = require("mini.snippets")
-	snippets.setup({
-		snippets = {
-			snippets.gen_loader.from_file(vim.fn.stdpath("config") .. "/snippets/global.json"),
-			snippets.gen_loader.from_lang({ lang_patterns = { tex = { "latex/**/*.json" } } }),
-		},
-	})
 end)
 
 now_if_args(function()

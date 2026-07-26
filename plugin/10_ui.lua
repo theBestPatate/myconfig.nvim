@@ -9,6 +9,10 @@ now(function()
 end)
 
 now(function()
+	vim.pack.add({ "https://github.com/theBestPatate/chilling_potato" })
+end)
+
+now(function()
 	vim.cmd("colorscheme chilling-potato")
 end)
 
@@ -34,8 +38,34 @@ end)
 now(function()
 	require("mini.notify").setup()
 end)
+
 now(function()
-	require("mini.statusline").setup()
+	-- Hide statusline and command line until needed
+	vim.opt.laststatus = 0
+	vim.opt.cmdheight = 0
+
+	-- Floating window to show macro recording (since all bars are hidden)
+	local rec_win = nil
+	Config.new_autocmd("RecordingEnter", nil, function()
+		local reg = vim.fn.reg_recording()
+		local buf = vim.api.nvim_create_buf(false, true)
+		vim.api.nvim_buf_set_lines(buf, 0, -1, false, { " ● recording @" .. reg })
+		rec_win = vim.api.nvim_open_win(buf, false, {
+			relative = "win", row = 1, col = vim.api.nvim_win_get_width(0) - 16,
+			width = 14, height = 1,
+			style = "minimal",
+			border = "rounded",
+			noautocmd = true,
+		})
+		vim.api.nvim_set_hl(0, "MacroRecFloat", { fg = "#cca386", bg = "#252323", bold = true })
+		vim.api.nvim_win_set_option(rec_win, "winhl", "Normal:MacroRecFloat,FloatBorder:MacroRecFloat")
+	end, "Show macro recording floating window")
+	Config.new_autocmd("RecordingLeave", nil, function()
+		if rec_win and vim.api.nvim_win_is_valid(rec_win) then
+			vim.api.nvim_win_close(rec_win, true)
+		end
+		rec_win = nil
+	end, "Hide macro recording floating window")
 end)
 now(function()
 	require("mini.tabline").setup()
@@ -71,10 +101,6 @@ later(function()
 	})
 end)
 later(function()
-	-- nvim-treesitter-context: Show current code context at the top
-	vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter-context" })
-	require("treesitter-context").setup()
-
 	-- Visualize and work with indent scope (the animated vertical line)
 	require("mini.indentscope").setup()
 end)

@@ -24,7 +24,8 @@ vim.o.colorcolumn = "+1"
 vim.o.cursorline = true
 vim.o.linebreak = true
 vim.o.list = true
-vim.o.number = true
+vim.o.number = false
+vim.o.relativenumber = false
 vim.o.pumborder = "single"
 vim.o.pumheight = 10
 vim.o.pummaxwidth = 100
@@ -78,7 +79,16 @@ end, "Proper 'formatoptions'")
 -- Diagnostics setup
 Config.later(function()
 	vim.diagnostic.config({
-		signs = { priority = 9999, severity = { min = "WARN", max = "ERROR" } },
+		signs = {
+			priority = 9999,
+			severity = { min = "HINT", max = "ERROR" },
+			text = {
+				[vim.diagnostic.severity.ERROR] = "",
+				[vim.diagnostic.severity.WARN]  = "",
+				[vim.diagnostic.severity.INFO]  = "",
+				[vim.diagnostic.severity.HINT]  = "",
+			},
+		},
 		underline = { severity = { min = "HINT", max = "ERROR" } },
 		virtual_lines = false,
 		virtual_text = { current_line = true, severity = { min = "ERROR", max = "ERROR" } },
