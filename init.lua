@@ -62,3 +62,33 @@ end
 vim.api.nvim_create_user_command('PackUpdate', function()
   vim.pack.update()
 end, { desc = 'Update all plugins to latest versions' })
+
+---Wipe ALL cached plugins, parsers, and the lock file.
+---On next launch vim.pack.add will reinstall everything from scratch.
+vim.api.nvim_create_user_command('PackWipe', function()
+  local data = vim.fn.stdpath('data')
+  local config = vim.fn.stdpath('config')
+  local paths = {
+    ('%s/site/pack'):format(data),
+    ('%s/site/parser'):format(data),
+    ('%s/site/parser-info'):format(data),
+    ('%s/site/queries'):format(data),
+    ('%s/lazy'):format(data),
+    ('%s/nvim-pack-lock.json'):format(config),
+  }
+  local deleted = {}
+  for _, p in ipairs(paths) do
+    if vim.uv.fs_stat(p) then
+      vim.fn.delete(p, 'rf')
+      table.insert(deleted, p)
+    end
+  end
+  if #deleted == 0 then
+    vim.notify('PackWipe: nothing to delete', vim.log.levels.INFO)
+  else
+    vim.notify(
+      'PackWipe: deleted\n  ' .. table.concat(deleted, '\n  ') .. '\nRestart nvim to reinstall.',
+      vim.log.levels.WARN
+    )
+  end
+end, { desc = 'Wipe all cached plugins, parsers, and lock file' })

@@ -213,3 +213,14 @@ filetype, and follow along.
 | Install new plugin | Add `vim.pack.add({ "url" })` to a plugin file, restart |
 | Show notifications | `<Leader>en` |
 | Edit config | `<Leader>ei` |
+
+### Pre-commit hook
+
+A stylua formatter hook lives at `scripts/pre-commit`.  Activate it once after
+cloning:
+
+```bash
+git config core.hooksPath scripts
+```
+
+After that, every `git commit` reformats staged `.lua` files automatically.

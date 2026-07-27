@@ -24,6 +24,9 @@ return {
 	settings = {
 		Lua = {
 			runtime = { version = "LuaJIT", path = vim.split(package.path, ";") },
+			diagnostics = {
+				globals = { "MiniBufremove", "MiniCompletion", "MiniDiff", "MiniIcons", "MiniKeymap", "MiniNotify" },
+			},
 			workspace = {
 				checkThirdParty = false,
 				ignoreSubmodules = true,
