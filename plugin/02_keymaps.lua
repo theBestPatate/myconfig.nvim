@@ -96,6 +96,7 @@ nmap_leader('tn', function()
     vim.o.number = true
   end
 end, 'Line numbers')
+nmap_leader('tm', '<Cmd>Markview<CR>', 'Markdown preview')
 nmap_leader('ts', function()
   if vim.o.spelllang == 'en' then
     vim.o.spelllang = 'fr'
@@ -156,7 +157,7 @@ nmap(']h', function()
     return ']h'
   end
   vim.schedule(function()
-    package.loaded.gitsigns.next_hunk()
+    require('mini.diff').next_hunk()
   end)
   return '<Ignore>'
 end, 'Next git hunk')
@@ -165,7 +166,7 @@ nmap('[h', function()
     return '[h'
   end
   vim.schedule(function()
-    package.loaded.gitsigns.prev_hunk()
+    require('mini.diff').prev_hunk()
   end)
   return '<Ignore>'
 end, 'Previous git hunk')
