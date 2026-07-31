@@ -45,6 +45,8 @@ auto-installed on first run.
 | `oxlint` | JavaScript linting | — |
 | `superhtml` | HTML | — |
 | `ty` | Python type checking | — |
+| `ruff` | Python linting & formatting | — |
+| `rust_analyzer` | Rust | `rustup component add rust-analyzer` |
 
 ---
 
