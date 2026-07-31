@@ -5,11 +5,11 @@
       "src": "https://github.com/catppuccin/nvim"
     },
     "chilling_potato": {
-      "rev": "22f5219c2746e8cbc8ab81675f184a05aad2d32f",
-      "src": "https://github.com/theBestPatate/chilling_potato.git"
+      "rev": "5841b5ffde4170e25832aded7337cb476d5792df",
+      "src": "https://github.com/theBestPatate/chilling_potato"
     },
     "codediff.nvim": {
-      "rev": "8bd120d5e02172852e788adde2abc94383cae741",
+      "rev": "243ecb4887d56bf024a1099d1ef329245d998441",
       "src": "https://github.com/esmuellert/codediff.nvim"
     },
     "conform.nvim": {
@@ -21,14 +21,10 @@
       "src": "https://github.com/folke/flash.nvim"
     },
     "fzf-lua": {
-      "rev": "9ad7340dcc6d2afc30e64fb4088597c7573ed62c",
+      "rev": "28440c741e927592877514fba3db21eb188caec8",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
-    "gitsigns.nvim": {
-      "rev": "31d6fb2d618bca1482b9f274751ead5f03461408",
-      "src": "https://github.com/lewis6991/gitsigns.nvim"
-    },
-    "markview": {
+    "markview.nvim": {
       "rev": "2471f4097f8561a6880a0fe05ee0f21cbc82b374",
       "src": "https://github.com/OXY2DEV/markview.nvim"
     },
@@ -37,7 +33,7 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.nvim": {
-      "rev": "946ae64e0ee807ae3c41f382f0114b4ed4915b2c",
+      "rev": "8bf5c57bc82dd590932faa41bfde9fd6d40a9433",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "nvim-colorizer.lua": {
@@ -45,7 +41,7 @@
       "src": "https://github.com/catgoose/nvim-colorizer.lua"
     },
     "nvim-lspconfig": {
-      "rev": "d592c1e6ad9a0a01b3d5ed3f0345d68407167181",
+      "rev": "9ae2b3b63b924b1329724dae76e9d2c5c40b389c",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-surround": {
@@ -53,12 +49,8 @@
       "src": "https://github.com/kylechui/nvim-surround"
     },
     "nvim-treesitter": {
-      "rev": "8b3a191c015dd66a92d51a112ed96af0aac13b63",
+      "rev": "0f32dff7f19476629c77467f887b95e5e2d33509",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
-    },
-    "nvim-treesitter-context": {
-      "rev": "b311b30818951d01f7b4bf650521b868b3fece16",
-      "src": "https://github.com/nvim-treesitter/nvim-treesitter-context"
     },
     "nvim-treesitter-textobjects": {
       "rev": "898ee307df58f854d11cd7edd06472574d48014e",
@@ -68,9 +60,9 @@
       "rev": "b73018b75affd13fa38e2fc94ef753b465f770d7",
       "src": "https://github.com/stevearc/oil.nvim"
     },
-    "vim-slime": {
-      "rev": "2cfdc3b24e7ebaa64f5a1a04b00555600c622b79",
-      "src": "https://github.com/jpalardy/vim-slime"
+    "swapping_potato": {
+      "rev": "af3b4ddf43ac6066abad6237fcc85478410b9547",
+      "src": "https://github.com/theBestPatate/swapping_potato"
     },
     "zen-mode": {
       "rev": "8564ce6d29ec7554eb9df578efa882d33b3c23a7",

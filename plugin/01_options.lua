@@ -1,97 +1,96 @@
 -- General
-vim.g.mapleader = " "
+vim.g.mapleader = ' '
 vim.o.confirm = true
 
 -- Disable unused providers (silence checkhealth warnings)
 vim.g.loaded_node_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
-vim.o.mouse = "a"
-vim.o.mousescroll = "ver:25,hor:6"
-vim.o.switchbuf = "usetab"
+vim.o.mouse = 'a'
+vim.o.mousescroll = 'ver:25,hor:6'
+vim.o.switchbuf = 'usetab'
 vim.o.undofile = true
 vim.o.shada = "'100,<50,s10,:1000,/100,@100,h"
 
-vim.cmd("filetype plugin indent on")
-if vim.fn.exists("syntax_on") ~= 1 then
-	vim.cmd("syntax enable")
+vim.cmd 'filetype plugin indent on'
+if vim.fn.exists 'syntax_on' ~= 1 then
+  vim.cmd 'syntax enable'
 end
 
 -- UI
 vim.o.breakindent = true
-vim.o.breakindentopt = "list:-1"
-vim.o.colorcolumn = "+1"
+vim.o.breakindentopt = 'list:-1'
+vim.o.colorcolumn = '+1'
 vim.o.cursorline = true
 vim.o.linebreak = true
 vim.o.list = true
 vim.o.number = false
 vim.o.relativenumber = false
-vim.o.pumborder = "single"
+vim.o.pumborder = 'single'
 vim.o.pumheight = 10
 vim.o.pummaxwidth = 100
 vim.o.ruler = false
-vim.o.shortmess = "CFOSWaco"
+vim.o.shortmess = 'CFOSWaco'
 vim.o.showmode = false
-vim.o.signcolumn = "yes"
+vim.o.signcolumn = 'yes'
 vim.o.splitbelow = true
-vim.o.splitkeep = "screen"
+vim.o.splitkeep = 'screen'
 vim.o.splitright = true
-vim.o.winborder = "single"
+vim.o.winborder = 'single'
 vim.o.wrap = false
-vim.o.cursorlineopt = "screenline,number"
-vim.o.fillchars = "eob: ,fold:╌"
+vim.o.cursorlineopt = 'screenline,number'
+vim.o.fillchars = 'eob: ,fold:╌'
 vim.o.listchars = 'extends:…,nbsp:␣,precedes:…,tab:| '
----@diagnostic disable-next-line: unicode-name
-vim.o.showbreak=↪ 
+vim.o.showbreak = '↪ '
 
 -- Folds
 vim.o.foldlevel = 10
-vim.o.foldmethod = "indent"
+vim.o.foldmethod = 'indent'
 vim.o.foldnestmax = 10
-vim.o.foldtext = ""
+vim.o.foldtext = ''
 
 -- Editing
 vim.o.autoindent = true
 vim.o.expandtab = true
-vim.o.formatoptions = "rqnl1j"
+vim.o.formatoptions = 'rqnl1j'
 vim.o.ignorecase = true
 vim.o.incsearch = true
 vim.o.infercase = true
 vim.o.shiftwidth = 2
 vim.o.smartcase = true
 vim.o.smartindent = true
-vim.o.spelloptions = "camel"
+vim.o.spelloptions = 'camel'
 vim.o.tabstop = 2
-vim.o.virtualedit = "block"
-vim.o.iskeyword = "@,48-57,_,192-255,-"
+vim.o.virtualedit = 'block'
+vim.o.iskeyword = '@,48-57,_,192-255,-'
 vim.o.formatlistpat = [[^\s*[0-9\-\+\*]\+[\.\)]*\s\+]]
 
 -- Built-in completion
-vim.o.complete = ".,w,b,kspell"
-vim.o.completeopt = "menuone,noselect,fuzzy,nosort"
+vim.o.complete = '.,w,b,kspell'
+vim.o.completeopt = 'menuone,noselect,fuzzy,nosort'
 vim.o.completetimeout = 100
 
 -- Prevent auto-wrapping comments
-Config.new_autocmd("FileType", nil, function()
-	vim.cmd("setlocal formatoptions-=c formatoptions-=o")
+Config.new_autocmd('FileType', nil, function()
+  vim.cmd 'setlocal formatoptions-=c formatoptions-=o'
 end, "Proper 'formatoptions'")
 
 -- Diagnostics setup
 Config.later(function()
-	vim.diagnostic.config({
-		signs = {
-			priority = 9999,
-			severity = { min = "HINT", max = "ERROR" },
-			text = {
-				[vim.diagnostic.severity.ERROR] = "",
-				[vim.diagnostic.severity.WARN]  = "",
-				[vim.diagnostic.severity.INFO]  = "",
-				[vim.diagnostic.severity.HINT]  = "",
-			},
-		},
-		underline = { severity = { min = "HINT", max = "ERROR" } },
-		virtual_lines = false,
-		virtual_text = { current_line = true, severity = { min = "ERROR", max = "ERROR" } },
-		update_in_insert = false,
-	})
+  vim.diagnostic.config {
+    signs = {
+      priority = 9999,
+      severity = { min = 'HINT', max = 'ERROR' },
+      text = {
+        [vim.diagnostic.severity.ERROR] = '',
+        [vim.diagnostic.severity.WARN] = '',
+        [vim.diagnostic.severity.INFO] = '',
+        [vim.diagnostic.severity.HINT] = '',
+      },
+    },
+    underline = { severity = { min = 'HINT', max = 'ERROR' } },
+    virtual_lines = false,
+    virtual_text = { current_line = true, severity = { min = 'ERROR', max = 'ERROR' } },
+    update_in_insert = false,
+  }
 end)

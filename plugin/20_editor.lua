@@ -216,6 +216,7 @@ vim.api.nvim_create_user_command('CodeBlockEdit', function(opts)
 end, { desc = 'Open injected code block in a dedicated buffer', bang = true })
 
 -- Argument swap: delegated to swapping_potato plugin.
+vim.pack.add { 'https://github.com/theBestPatate/swapping_potato' }
 require('swapping_potato').setup()
 
 -- 2. Flash.nvim (Priority over 's')

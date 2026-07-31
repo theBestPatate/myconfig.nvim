@@ -1,0 +1,13 @@
+{
+  "Lua": {
+    "runtime": { "version": "LuaJIT" },
+    "workspace": {
+      "checkThirdParty": false,
+      "library": ["$VIMRUNTIME"]
+    },
+    "diagnostics": {
+      "globals": ["vim", "Config", "MiniIcons", "MiniKeymap", "MiniCompletion"]
+    },
+    "telemetry": { "enable": false }
+  }
+}

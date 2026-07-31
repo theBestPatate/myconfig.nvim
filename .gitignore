@@ -1,7 +1,34 @@
-tags
-test.sh
-.luarc.json
-nvim
+# Ignore everything by default — only track the explicit structure below.
+*
 
-spell/
-lazy-lock.json
+# Config root
+!.gitignore
+!.luarc.json
+!.stylua.toml
+!README.md
+!init.lua
+!nvim-pack-lock.json
+
+# Plugin files
+!plugin/
+!plugin/**
+
+# After (ftplugin + LSP configs)
+!after/
+!after/**
+
+# Demos
+!demos/
+!demos/**
+
+# CI / templates
+!.github/
+!.github/**
+
+# Scripts
+!scripts/
+!scripts/**
+
+# Legacy — remove once cleaned up
+!test_arg_swap.py
+!test.py
