@@ -122,14 +122,18 @@ require('mason').setup {
 -- Custom configs are loaded from after/lsp/<name>.lua, defaults use {}
 local servers = {}
 for _, name in ipairs {
+  'bashls',
+  'eslint',
   'lua_ls',
-  'stylua',
-  'tinymist',
   'marksman',
-  'vtsls',
   'oxlint',
+  'ruff',
+  'rust_analyzer',
+  'stylua',
   'superhtml',
+  'tinymist',
   'ty',
+  'vtsls',
 } do
   local cfg = {}
   local cfg_file = vim.fn.stdpath 'config' .. '/after/lsp/' .. name .. '.lua'

@@ -166,14 +166,14 @@ Work in **visual** (`v`, `V`) and **operator-pending** (`d`, `c`, `y`, ...) mode
 | [mini.nvim](https://github.com/nvim-mini/mini.nvim) | Core framework — icons, tabline, completion, pairs, comment, clue, diff, notify, indentscope, bufremove, misc |
 | [chilling-potato](https://github.com/theBestPatate/chilling_potato) | Colorscheme |
 | [catppuccin](https://github.com/catppuccin/nvim) | Alternative colorscheme (installed, not active) |
-| [swapping-potato](https://github.com/theBestPatate/swapping_potato) | Argument swapping (`<Leader>a` / `<Leader>A`) |
+| [swapping_potato](https://github.com/theBestPatate/swapping_potato) | Argument swapping (`<Leader>a` / `<Leader>A`) |
 | [markview.nvim](https://github.com/OXY2DEV/markview.nvim) | Live markdown preview (`<Leader>tm`) |
 | [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) | Syntax highlighting, folds, indentation |
 | [nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) | Select, move, swap code by structure |
 | [conform.nvim](https://github.com/stevearc/conform.nvim) | Autoformatting on save |
 | [flash.nvim](https://github.com/folke/flash.nvim) | Fast in-buffer navigation with labels |
 | [fzf-lua](https://github.com/ibhagwan/fzf-lua) | Fuzzy finder, live grep, buffer switcher, git status |
-| [mini.diff](https://github.com/nvim-mini/mini.diff) | Git diff overlay and hunk navigation |
+| [mini.diff](https://github.com/nvim-mini/mini.nvim) | Git diff overlay and hunk navigation |
 | [nvim-surround](https://github.com/kylechui/nvim-surround) | Surround operations (add, change, delete) |
 | [mason.nvim](https://github.com/mason-org/mason.nvim) | LSP server installer |
 | [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) | LSP server configurations |
