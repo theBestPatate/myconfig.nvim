@@ -1,27 +1,30 @@
+---20_editor — editing helpers: text objects, code-block editing, argument
+---swapping, flash navigation, auto-formatting, and surround.
+
 local now, later = Config.now, Config.later
 
--- Briefly highlight yanked text
+-- Brief yank highlight
 Config.new_autocmd('TextYankPost', nil, function()
-  vim.highlight.on_yank { higroup = 'IncSearch', timeout = 150 }
+  vim.hl.on_yank { higroup = 'IncSearch', timeout = 150 }
 end, 'Highlight yanked text')
 
--- Prevent comment-leader and auto-wrap from inserting when typing
--- (formatoptions -=c removes 'auto-wrap comments', -=o removes 'insert comment leader')
+-- Some filetype plugins enable two annoying comment behaviours that we
+-- strip back on every FileType event:
+--   c  When typing a comment that hits the text-width limit, Vim automatically
+--      breaks it onto a new line and inserts a comment prefix — noisy when
+--      you're still writing the sentence.
+--   o  Pressing 'o' or <Enter> on a comment line copies the comment prefix
+--      to the new line — annoying when you want a blank line after a comment.
 Config.new_autocmd('FileType', nil, function()
   vim.cmd 'setlocal formatoptions-=c formatoptions-=o'
 end, 'Disable comment auto-wrap')
 
--- 1. Text manipulation (Mini tools)
+-- 1. Mini editing tools ----------------------------------------------------
 later(function()
   require('mini.pairs').setup { modes = { command = true } }
   require('mini.comment').setup()
-  require('mini.move').setup()
-  require('mini.splitjoin').setup()
-  require('mini.align').setup()
-  require('mini.trailspace').setup()
-  require('mini.operators').setup()
 
-  -- Autocompletion menu & Auto-pairs navigation
+  -- pmenu navigation and auto-pairs via mini.keymap
   require('mini.keymap').setup()
   MiniKeymap.map_multistep('i', '<Tab>', { 'pmenu_next' })
   MiniKeymap.map_multistep('i', '<S-Tab>', { 'pmenu_prev' })
@@ -33,55 +36,76 @@ end)
 now(function()
   vim.pack.add { 'https://github.com/catgoose/nvim-colorizer.lua' }
 end)
-Config.later(function()
-  local ok, colorizer = pcall(require, 'colorizer')
-  if not ok then
-    return
-  end
-  colorizer.setup {
+
+---Configure and attach colorizer to the current buffer.
+---Called both on first install (via on_packchanged) and on subsequent
+---startups (via Config.later).
+local function setup_colorizer()
+  require('colorizer').setup {
     filetypes = { '*' },
     user_default_options = { mode = 'background' },
   }
   vim.cmd 'ColorizerAttachToBuffer'
+end
+
+-- Already installed: set up now; first install: set up when PackChanged fires
+Config.later(function()
+  if pcall(require, 'colorizer') then
+    setup_colorizer()
+  end
 end)
+Config.on_packchanged('nvim-colorizer.lua', { 'install' }, setup_colorizer, 'Setup colorizer on first install')
 
-vim.api.nvim_create_autocmd('FileType', {
-  callback = function()
-    local ts_textobjects = require 'nvim-treesitter-textobjects'
+-- Treesitter text objects (af, if, ac, etc.)
+Config.new_autocmd('FileType', nil, function()
+  local ok, ts_textobjects = pcall(require, 'nvim-treesitter-textobjects')
+  if not ok then
+    return
+  end
 
-    ts_textobjects.setup {
-      select = { lookahead = true, selection_modes = { ['@function.outer'] = 'V', ['@class.outer'] = 'V' } },
-    }
+  ts_textobjects.setup {
+    select = { lookahead = true, selection_modes = { ['@function.outer'] = 'V', ['@class.outer'] = 'V' } },
+  }
 
-    local select = require 'nvim-treesitter-textobjects.select'
+  local select = require 'nvim-treesitter-textobjects.select'
 
-    local function sel(key, capture)
-      vim.keymap.set({ 'x', 'o' }, key, function()
-        select.select_textobject(capture, 'textobjects')
-      end, { desc = 'Select ' .. capture, buffer = true })
-    end
+  -- Treesitter textobject keymaps:  a<key> selects the outer region,
+  -- i<key> selects the inner region (excluding delimiters).
+  -- Works in visual (x) and operator-pending (o) modes.
+  local textobjects = {
+    -- functions
+    { 'af', '@function.outer' },
+    { 'if', '@function.inner' },
+    -- classes
+    { 'ac', '@class.outer' },
+    { 'ic', '@class.inner' },
+    -- parameters
+    { 'aa', '@parameter.outer' },
+    { 'ia', '@parameter.inner' },
+    -- conditionals (if/else/etc.)
+    { 'ai', '@conditional.outer' },
+    { 'ii', '@conditional.inner' },
+    -- loops
+    { 'al', '@loop.outer' },
+    { 'il', '@loop.inner' },
+    -- blocks (any {})
+    { 'ab', '@block.outer' },
+    { 'ib', '@block.inner' },
+    -- call expressions
+    { 'aC', '@call.outer' },
+    { 'iC', '@call.inner' },
+  }
 
-    -- Selections (buffer-local)
-    sel('af', '@function.outer')
-    sel('if', '@function.inner')
-    sel('ac', '@class.outer')
-    sel('ic', '@class.inner')
-    sel('aa', '@parameter.outer')
-    sel('ia', '@parameter.inner')
-    sel('ai', '@conditional.outer')
-    sel('ii', '@conditional.inner')
-    sel('al', '@loop.outer')
-    sel('il', '@loop.inner')
-    sel('ab', '@block.outer')
-    sel('ib', '@block.inner')
-    sel('aC', '@call.outer')
-    sel('iC', '@call.inner')
-  end,
-})
+  for _, entry in ipairs(textobjects) do
+    vim.keymap.set({ 'x', 'o' }, entry[1], function()
+      select.select_textobject(entry[2], 'textobjects')
+    end, { desc = 'Select ' .. entry[2], buffer = true })
+  end
+end, 'Treesitter text objects')
 
--- CodeBlockEdit: dive into a treesitter-injected code block in a dedicated buffer.
--- Saves sync back to the original document. All LSP/treesitter/text-objects
--- work natively because the buffer has the real filetype.
+-- CodeBlockEdit: dive into a treesitter-injected code block in a dedicated
+-- buffer. Saves sync back to the original document. All LSP/treesitter/
+-- text-objects work natively because the buffer has the real filetype.
 vim.api.nvim_create_user_command('CodeBlockEdit', function(opts)
   local main_buf = vim.api.nvim_get_current_buf()
   local parser = vim.treesitter.get_parser(main_buf)
@@ -91,25 +115,28 @@ vim.api.nvim_create_user_command('CodeBlockEdit', function(opts)
   end
   parser:parse(true)
 
-  local row, col = vim.api.nvim_win_get_cursor(0)
-  row = row - 1
+  local cursor_row, cursor_col = vim.api.nvim_win_get_cursor(0)
+  cursor_row = cursor_row - 1
 
   -- Find injected language at cursor
-  local lt = parser:language_for_range { row, col, row, col }
-  if not lt or lt:lang() == parser:lang() then
+  local language_tree = parser:language_for_range { cursor_row, cursor_col, cursor_row, cursor_col }
+  if not language_tree or language_tree:lang() == parser:lang() then
     vim.notify('Cursor is not inside a code block', vim.log.levels.WARN)
     return
   end
-  local lang = lt:lang()
+  local lang = language_tree:lang()
 
-  -- Collect all injection regions for this language, merge contiguous ones
   local all_regions = {}
-  local function collect_regions(t)
-    for child_lang, child_tree in pairs(t:children()) do
+
+  -- Walk the language tree recursively, collecting every injection region
+  -- for the target language (tree is a vim.treesitter.LanguageTree).
+  -- Each region is a {start_row, start_col, end_row, end_col} tuple.
+  local function collect_regions(tree)
+    for child_lang, child_tree in pairs(tree:children()) do
       if child_lang == lang then
-        for _, rl in pairs(child_tree:included_regions()) do
-          for _, r in ipairs(rl) do
-            table.insert(all_regions, { unpack(r) })
+        for _, region_list in pairs(child_tree:included_regions()) do
+          for _, region in ipairs(region_list) do
+            table.insert(all_regions, { unpack(region) })
           end
         end
       end
@@ -123,7 +150,7 @@ vim.api.nvim_create_user_command('CodeBlockEdit', function(opts)
     return
   end
 
-  -- Sort and merge contiguous regions
+  -- Sort and merge contiguous/overlapping regions
   table.sort(all_regions, function(a, b)
     if a[1] == b[1] then
       return a[2] < b[2]
@@ -134,21 +161,20 @@ vim.api.nvim_create_user_command('CodeBlockEdit', function(opts)
   local merged = { all_regions[1] }
   for i = 2, #all_regions do
     local last = merged[#merged]
-    local cur = all_regions[i]
-    -- Adjacent or overlapping: merge
-    if cur[1] <= last[4] then
-      last[4] = math.max(last[4], cur[4])
-      last[5] = math.max(last[5], cur[5])
+    local current = all_regions[i]
+    if current[1] <= last[4] then
+      last[4] = math.max(last[4], current[4])
+      last[5] = math.max(last[5], current[5])
     else
-      table.insert(merged, cur)
+      table.insert(merged, current)
     end
   end
 
   -- Find the merged region containing the cursor
-  local target_region = nil
-  for _, r in ipairs(merged) do
-    if row >= r[1] and row <= r[4] then
-      target_region = r
+  local target_region
+  for _, region in ipairs(merged) do
+    if cursor_row >= region[1] and cursor_row <= region[4] then
+      target_region = region
       break
     end
   end
@@ -158,24 +184,24 @@ vim.api.nvim_create_user_command('CodeBlockEdit', function(opts)
   end
 
   -- Extract text from merged region
-  local sr, sc, _, er, ec = unpack(target_region)
-  local text = vim.api.nvim_buf_get_text(main_buf, sr, sc, er, ec, {})
+  local start_row, start_col, _, end_row, end_col = unpack(target_region)
+  local text = vim.api.nvim_buf_get_text(main_buf, start_row, start_col, end_row, end_col, {})
 
-  -- Create child buffer with a real temp file so LSP servers (ty, etc.) attach
+  -- Create child buffer with a real temp file so LSP servers attach
   local child_buf = vim.api.nvim_create_buf(true, false)
   local tmpname = vim.fn.tempname() .. '.' .. lang
   vim.api.nvim_buf_set_name(child_buf, tmpname)
   vim.bo[child_buf].filetype = lang
-  vim.bo[child_buf].bufhidden = 'wipe' -- auto-delete when hidden
+  vim.bo[child_buf].bufhidden = 'wipe'
   vim.api.nvim_buf_set_lines(child_buf, 0, -1, false, text)
 
   -- Store back-reference for saving
   vim.b[child_buf].codeblock_main_buf = main_buf
-  vim.b[child_buf].codeblock_range = { sr, sc, er, ec }
+  vim.b[child_buf].codeblock_range = { start_row, start_col, end_row, end_col }
 
   local augroup = vim.api.nvim_create_augroup('CodeBlockEdit', {})
 
-  -- Clean up temp file on close (capture name now, buffer won't be valid later)
+  -- Clean up temp file on close
   vim.api.nvim_create_autocmd('BufWipeout', {
     buffer = child_buf,
     group = augroup,
@@ -192,21 +218,20 @@ vim.api.nvim_create_user_command('CodeBlockEdit', function(opts)
     buffer = child_buf,
     group = augroup,
     callback = function()
-      local cb = vim.api.nvim_get_current_buf()
-      local mb = vim.b[cb].codeblock_main_buf
-      local rng = vim.b[cb].codeblock_range
-      if not mb or not vim.api.nvim_buf_is_valid(mb) or not rng then
+      local edit_buf = vim.api.nvim_get_current_buf()
+      local source_buf = vim.b[edit_buf].codeblock_main_buf
+      local range = vim.b[edit_buf].codeblock_range
+      if not source_buf or not vim.api.nvim_buf_is_valid(source_buf) or not range then
         vim.notify('Original buffer no longer available', vim.log.levels.WARN)
         return
       end
-      local new_text = vim.api.nvim_buf_get_lines(cb, 0, -1, false)
+      local new_text = vim.api.nvim_buf_get_lines(edit_buf, 0, -1, false)
       -- Remove trailing empty line from nvim_buf_get_lines
       if #new_text > 0 and new_text[#new_text] == '' then
         table.remove(new_text)
       end
-      vim.api.nvim_buf_set_text(mb, rng[1], rng[2], rng[3], rng[4], new_text)
-      -- Mark as saved
-      vim.bo[cb].modified = false
+      vim.api.nvim_buf_set_text(source_buf, range[1], range[2], range[3], range[4], new_text)
+      vim.bo[edit_buf].modified = false
       vim.schedule(function()
         vim.notify(string.format('Synced %d lines back to original', #new_text), vim.log.levels.INFO)
       end)
@@ -221,11 +246,11 @@ vim.api.nvim_create_user_command('CodeBlockEdit', function(opts)
   vim.notify(string.format('Editing %s code block (temp file). :w syncs back, :q discards.', lang), vim.log.levels.INFO)
 end, { desc = 'Open injected code block in a dedicated buffer', bang = true })
 
--- Argument swap: delegated to swapping_potato plugin.
+-- Argument swapping via swapping_potato plugin
 vim.pack.add { 'https://github.com/theBestPatate/swapping_potato' }
 require('swapping_potato').setup()
 
--- 2. Flash.nvim (Priority over 's')
+-- 2. Flash.nvim — fast jump navigation -----------------------------------
 later(function()
   vim.pack.add { 'https://github.com/folke/flash.nvim' }
   require('flash').setup {}
@@ -242,7 +267,7 @@ later(function()
   end, { desc = 'Remote Flash' })
 end)
 
--- 3. Conform.nvim (Autoformatter)
+-- 3. Conform.nvim — auto-formatting --------------------------------------
 later(function()
   vim.pack.add { 'https://github.com/stevearc/conform.nvim' }
 
@@ -255,8 +280,7 @@ later(function()
       if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
         return
       end
-      local disable_filetypes = { c = false, cpp = false }
-      return { timeout_ms = 500, lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype] }
+      return { timeout_ms = 500, lsp_fallback = true }
     end,
     formatters_by_ft = {
       python = { 'black', 'isort' },
@@ -305,7 +329,7 @@ later(function()
   end, { desc = 'Toggle autoformat globally' })
 end)
 
--- 4. Nvim-surround
+-- 4. Nvim-surround — add/change/delete surrounding pairs -----------------
 later(function()
   vim.pack.add { 'https://github.com/kylechui/nvim-surround' }
 end)
