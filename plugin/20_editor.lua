@@ -24,12 +24,7 @@ later(function()
   require('mini.pairs').setup { modes = { command = true } }
   require('mini.comment').setup()
 
-  -- pmenu navigation and auto-pairs via mini.keymap
-  require('mini.keymap').setup()
-  MiniKeymap.map_multistep('i', '<Tab>', { 'pmenu_next' })
-  MiniKeymap.map_multistep('i', '<S-Tab>', { 'pmenu_prev' })
-  MiniKeymap.map_multistep('i', '<CR>', { 'pmenu_accept', 'minipairs_cr' })
-  MiniKeymap.map_multistep('i', '<BS>', { 'minipairs_bs' })
+  -- mini.keymap bindings (Tab/CR/BS in insert mode) are in 02_keymaps.lua
 end)
 
 -- Inline hex color preview
@@ -251,20 +246,9 @@ vim.pack.add { 'https://github.com/theBestPatate/swapping_potato' }
 require('swapping_potato').setup()
 
 -- 2. Flash.nvim — fast jump navigation -----------------------------------
+-- Keymaps and setup are in 02_keymaps.lua
 later(function()
   vim.pack.add { 'https://github.com/folke/flash.nvim' }
-  require('flash').setup {}
-
-  local map = vim.keymap.set
-  map({ 'n', 'x', 'o' }, '<leader>s', function()
-    require('flash').jump()
-  end, { desc = 'Flash Jump' })
-  map({ 'n', 'x', 'o' }, '<leader>S', function()
-    require('flash').treesitter_search()
-  end, { desc = 'Treesitter Search' })
-  map('o', 'r', function()
-    require('flash').remote()
-  end, { desc = 'Remote Flash' })
 end)
 
 -- 3. Conform.nvim — auto-formatting --------------------------------------
@@ -307,26 +291,7 @@ later(function()
     vim.g.disable_autoformat = false
   end, { desc = 'Re-enable autoformat-on-save' })
 
-  -- Conform Keymaps (Using 'c' for code to avoid 't' terminal conflict)
-  vim.keymap.set('n', '<leader>cf', function()
-    if vim.b.disable_autoformat then
-      vim.cmd 'ConformEnable'
-      vim.notify 'Enabled autoformat for current buffer'
-    else
-      vim.cmd 'ConformDisable!'
-      vim.notify 'Disabled autoformat for current buffer'
-    end
-  end, { desc = 'Toggle autoformat for current buffer' })
-
-  vim.keymap.set('n', '<leader>cF', function()
-    if vim.g.disable_autoformat then
-      vim.cmd 'ConformEnable'
-      vim.notify 'Enabled autoformat globally'
-    else
-      vim.cmd 'ConformDisable'
-      vim.notify 'Disabled autoformat globally'
-    end
-  end, { desc = 'Toggle autoformat globally' })
+  -- Conform toggle keymaps are in 02_keymaps.lua under <Leader>t
 end)
 
 -- 4. Nvim-surround — add/change/delete surrounding pairs -----------------

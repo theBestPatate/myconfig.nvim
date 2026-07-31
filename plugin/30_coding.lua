@@ -144,20 +144,7 @@ for name, cfg in pairs(servers) do
   vim.lsp.enable(name)
 end
 
--- LSP Keymaps (registered eagerly so WhichKey shows them;
--- the vim.lsp.buf functions safely NOP when no client is attached).
-do
-  local n_mode_leader_keymap = function(suf, rhs, desc)
-    vim.keymap.set('n', '<Leader>' .. suf, rhs, { desc = desc })
-  end
-  n_mode_leader_keymap('la', '<Cmd>lua vim.lsp.buf.code_action()<CR>', 'Actions')
-  n_mode_leader_keymap('ld', '<Cmd>lua vim.diagnostic.open_float()<CR>', 'Diagnostic popup')
-  n_mode_leader_keymap('li', '<Cmd>lua vim.lsp.buf.implementation()<CR>', 'Implementation')
-  n_mode_leader_keymap('lh', '<Cmd>lua vim.lsp.buf.hover()<CR>', 'Hover')
-  n_mode_leader_keymap('lr', '<Cmd>lua vim.lsp.buf.rename()<CR>', 'Rename')
-  n_mode_leader_keymap('lR', '<Cmd>lua vim.lsp.buf.references()<CR>', 'References')
-  n_mode_leader_keymap('ls', '<Cmd>lua vim.lsp.buf.definition()<CR>', 'Source definition')
-end
+-- LSP keymaps (<leader>la, <leader>ld, …) are in 02_keymaps.lua
 
 -- 3. Autocompletion =======================================================
 now_if_args(function()
