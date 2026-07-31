@@ -179,6 +179,31 @@ now_if_args(function()
   vim.lsp.config('*', { capabilities = MiniCompletion.get_lsp_capabilities() })
 end)
 
+-- 4. Diagnostics display ===================================================
+Config.later(function()
+  vim.diagnostic.config {
+    signs = {
+      priority = 9999,
+      severity = { min = vim.diagnostic.severity.HINT, max = vim.diagnostic.severity.ERROR },
+      text = {
+        [vim.diagnostic.severity.ERROR] = '',
+        [vim.diagnostic.severity.WARN] = '',
+        [vim.diagnostic.severity.INFO] = '',
+        [vim.diagnostic.severity.HINT] = '',
+      },
+    },
+    underline = {
+      severity = { min = vim.diagnostic.severity.HINT, max = vim.diagnostic.severity.ERROR },
+    },
+    virtual_lines = false,
+    virtual_text = {
+      current_line = true,
+      severity = { min = vim.diagnostic.severity.ERROR, max = vim.diagnostic.severity.ERROR },
+    },
+    update_in_insert = false,
+  }
+end)
+
 now_if_args(function()
   vim.pack.add { 'https://github.com/esmuellert/codediff.nvim' }
 end)

@@ -5,6 +5,12 @@ Config.new_autocmd('TextYankPost', nil, function()
   vim.highlight.on_yank { higroup = 'IncSearch', timeout = 150 }
 end, 'Highlight yanked text')
 
+-- Prevent comment-leader and auto-wrap from inserting when typing
+-- (formatoptions -=c removes 'auto-wrap comments', -=o removes 'insert comment leader')
+Config.new_autocmd('FileType', nil, function()
+  vim.cmd 'setlocal formatoptions-=c formatoptions-=o'
+end, 'Disable comment auto-wrap')
+
 -- 1. Text manipulation (Mini tools)
 later(function()
   require('mini.pairs').setup { modes = { command = true } }
