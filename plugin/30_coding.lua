@@ -105,6 +105,7 @@ vim.pack.add { 'https://github.com/mason-org/mason.nvim' }
 
 require('mason').setup {
   ensure_installed = {
+    'bash-language-server',
     'lua-language-server',
     'marksman',
     'ruff',
@@ -120,6 +121,7 @@ require('mason').setup {
 -- Custom configs are loaded from after/lsp/<name>.lua, defaults use {}
 local servers = {}
 for _, name in ipairs {
+  'bashls',
   'lua_ls',
   'marksman',
   'oxlint',
