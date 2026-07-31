@@ -1,8 +1,7 @@
 # myconfig.nvim
 
-Personal Neovim configuration — a fork of [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim),
-rebuilt around [mini.nvim](https://github.com/nvim-mini/mini.nvim) and Neovim's native
-`vim.pack.add()`.
+Personal Neovim configuration — rebuilt around [mini.nvim](https://github.com/nvim-mini/mini.nvim)
+and Neovim's native `vim.pack.add()`.
 
 ## Quick Start
 
@@ -23,51 +22,40 @@ Some plugins need binaries on your `$PATH`.
 
 | Package | Gentoo | Debian / Ubuntu | Why |
 |---------|--------|-----------------|-----|
-| `fd` | `emerge fd` | `apt install fd-find` (binary is `fdfind`, symlink to `fd`) | fzf-lua file listing |
-| `fzf` | `emerge fzf` | `apt install fzf` | fzf-lua binary |
-| `ripgrep` | `emerge ripgrep` | `apt install ripgrep` | fzf-lua live grep |
-| `node` | `emerge nodejs` | `apt install nodejs` | vtsls LSP (TypeScript) |
-| Nerd Font | `emerge nerd-fonts` | download from [nerdfonts.com](https://www.nerdfonts.com/) | icons in UI |
+| `fd` | `emerge sys-apps/fd` | `apt install fd-find` (binary is `fdfind`, symlink to `fd`) | fzf-lua file listing |
+| `fzf` | `emerge app-shells/fzf` | `apt install fzf` | fzf-lua binary |
+| `ripgrep` | `emerge sys-apps/ripgrep` | `apt install ripgrep` | fzf-lua live grep |
+| `node` | `emerge net-libs/nodejs` | `apt install nodejs` | vtsls LSP (TypeScript) |
+| Nerd Font | `emerge media-fonts/nerd-fonts` | download from [nerdfonts.com](https://www.nerdfonts.com/) | icons in UI |
 
 ---
 
 ## LSP Servers
 
 All servers are managed by [mason.nvim](https://github.com/mason-org/mason.nvim) and
-auto-installed on first use.
+auto-installed on first run.
 
-| Server | Language | Mason | Extra setup |
-|--------|----------|-------|-------------|
-| `lua_ls` | Lua | auto | — |
-| `stylua` (stylua-lsp) | Lua formatting | auto | — |
-| `tinymist` | Typst | auto | — |
-| `marksman` | Markdown | auto | — |
-| `vtsls` | TypeScript / JavaScript | auto | `npm install -g typescript` recommended |
-| `oxlint` | JavaScript linting | auto | — |
-| `superhtml` | HTML | auto | — |
-| `ty` | Python type checking | auto | — |
+| Server | Language | Extra setup |
+|--------|----------|-------------|
+| `lua_ls` | Lua | — |
+| `stylua` | Lua formatting | — |
+| `tinymist` | Typst | — |
+| `marksman` | Markdown | — |
+| `vtsls` | TypeScript / JavaScript | `npm install -g typescript` recommended |
+| `oxlint` | JavaScript linting | — |
+| `superhtml` | HTML | — |
+| `ty` | Python type checking | — |
 
 ---
 
 ## Formatters (conform.nvim)
 
+Formatting runs on save automatically.
+
 | Tool | Language | Install |
 |------|----------|---------|
 | `black` + `isort` | Python | `uv tool install black isort` |
 | `prettierd` | HTML, CSS, JS, TS, JSX, TSX | `npm install -g @fsouza/prettierd` |
-
-Install commands:
-
-```bash
-# Python formatters (available globally via uv)
-uv tool install black isort
-
-# Web formatter (available globally via npm)
-npm install -g @fsouza/prettierd
-```
-
-Formatting runs on save automatically. Disable it per-buffer with `<Leader>cf`,
-globally with `<Leader>cF`.
 
 ---
 
@@ -75,7 +63,7 @@ globally with `<Leader>cF`.
 
 Leader key is `<Space>`.
 
-### Buffer
+### Buffer — `<Leader>b`
 
 | Key | Action |
 |-----|--------|
@@ -86,7 +74,7 @@ Leader key is `<Space>`.
 | `<Leader>bw` | Wipeout buffer |
 | `<Leader>bs` | New scratch buffer |
 
-### Edit / System
+### Edit / System — `<Leader>e`
 
 | Key | Action |
 |-----|--------|
@@ -122,30 +110,35 @@ Leader key is `<Space>`.
 | `<Leader>lR` | References |
 | `<Leader>ls` | Go to definition |
 
-### Code / Conform — `<Leader>c`
+### Toggle — `<Leader>t`
 
 | Key | Action |
 |-----|--------|
-| `<Leader>cf` | Toggle autoformat (buffer) |
-| `<Leader>cF` | Toggle autoformat (global) |
+| `<Leader>tf` | Toggle autoformat (buffer) |
+| `<Leader>tF` | Toggle autoformat (global) |
+| `<Leader>tg` | Toggle git diff overlay |
+| `<Leader>tm` | Toggle markdown preview (markview) |
+| `<Leader>tn` | Cycle line numbers (off → absolute → relative → off) |
+| `<Leader>ts` | Toggle spell language (English ↔ French) |
 
-### Git — `<Leader>g`
+### Git
 
 | Key | Action |
 |-----|--------|
-| `]h` / `[h` | Next / previous git hunk |
-| `<Leader>go` | Toggle diff overlay |
+| `]h` / `[h` | Next / previous git hunk (mini.diff) |
+| `<Leader>tg` | Toggle diff overlay |
 
-### Flash (fast in-buffer navigation)
+### Flash — `<Leader>s` (fast in-buffer navigation)
 
 | Key | Action |
 |-----|--------|
 | `<Leader>s` | Jump anywhere on screen with labels |
 | `<Leader>S` | Treesitter search |
+| `r` (operator-pending) | Remote flash (e.g. `dr` to delete to label) |
 
 ### Treesitter Text Objects
 
-These work in **visual** (`v`) and **operator-pending** (`d`, `c`, `y`, ...) modes.
+Work in **visual** (`v`, `V`) and **operator-pending** (`d`, `c`, `y`, ...) modes.
 
 | Key | Select |
 |-----|--------|
@@ -162,7 +155,9 @@ These work in **visual** (`v`) and **operator-pending** (`d`, `c`, `y`, ...) mod
 | Key | Action |
 |-----|--------|
 | `[p` / `]p` | Paste above / below |
-| `<Leader>a` / `<Leader>A` | Swap argument left / right |
+| `<Leader>oc` | Edit injected code block in dedicated buffer (CodeBlockEdit) |
+| `<Leader>of` | Open file/directory under cursor |
+| `<Leader>a` / `<Leader>A` | Swap argument left / right (swapping-potato) |
 
 ---
 
@@ -170,38 +165,37 @@ These work in **visual** (`v`) and **operator-pending** (`d`, `c`, `y`, ...) mod
 
 | Plugin | Purpose |
 |--------|---------|
-| [mini.nvim](https://github.com/nvim-mini/mini.nvim) | Core framework — icons, tabline, completion, pairs, comment, clue, diff, notify, indentscope, move, splitjoin, align, trailspace, operators, keymap, bufremove, misc |
+| [mini.nvim](https://github.com/nvim-mini/mini.nvim) | Core framework — icons, tabline, completion, pairs, comment, clue, diff, notify, indentscope, bufremove, misc |
 | [chilling-potato](https://github.com/theBestPatate/chilling_potato) | Colorscheme |
 | [catppuccin](https://github.com/catppuccin/nvim) | Alternative colorscheme (installed, not active) |
+| [swapping-potato](https://github.com/theBestPatate/swapping_potato) | Argument swapping (`<Leader>a` / `<Leader>A`) |
+| [markview.nvim](https://github.com/OXY2DEV/markview.nvim) | Live markdown preview (`<Leader>tm`) |
 | [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) | Syntax highlighting, folds, indentation |
 | [nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) | Select, move, swap code by structure |
 | [conform.nvim](https://github.com/stevearc/conform.nvim) | Autoformatting on save |
 | [flash.nvim](https://github.com/folke/flash.nvim) | Fast in-buffer navigation with labels |
 | [fzf-lua](https://github.com/ibhagwan/fzf-lua) | Fuzzy finder, live grep, buffer switcher, git status |
-| [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) | Git gutter signs |
+| [mini.diff](https://github.com/nvim-mini/mini.diff) | Git diff overlay and hunk navigation |
 | [nvim-surround](https://github.com/kylechui/nvim-surround) | Surround operations (add, change, delete) |
-| [zen-mode.nvim](https://github.com/folke/zen-mode.nvim) | Distraction-free editing |
 | [mason.nvim](https://github.com/mason-org/mason.nvim) | LSP server installer |
 | [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) | LSP server configurations |
 | [codediff.nvim](https://github.com/esmuellert/codediff.nvim) | Diff viewer |
-| [oil.nvim](https://github.com/stevearc/oil.nvim) | Directory-as-buffer editing (`:Oil`). Keybindings removed — use fzf-lua for file navigation. |
+| [oil.nvim](https://github.com/stevearc/oil.nvim) | Directory-as-buffer editing |
+| [zen-mode.nvim](https://github.com/folke/zen-mode.nvim) | Distraction-free editing |
+| [nvim-colorizer.lua](https://github.com/catgoose/nvim-colorizer.lua) | Inline hex color preview |
 
 ---
 
 ## Interactive Demos
 
-Each file in `demos/` is a self-contained tutorial. Open it in Neovim, set the
-filetype, and follow along.
+Each file in `demos/` is a self-contained tutorial. Open it in Neovim and follow along.
 
 | File | Covers |
 |------|--------|
 | `demos/text_objects.md` | Treesitter select, move, swap, repeat |
 | `demos/navigation.md` | flash.nvim, fzf-lua |
-| `demos/coding.md` | LSP, completion, snippets, conform, codediff |
-| `demos/git.md` | gitsigns, mini.diff |
-
-> **Recording demos**: `<!--DEMO-->` blocks inside most demo files contain JSON
-> steps that can be replayed via `tmux send-keys` to generate GIF previews.
+| `demos/coding.md` | LSP, completion, conform, codediff |
+| `demos/git.md` | mini.diff |
 
 ---
 
@@ -210,17 +204,14 @@ filetype, and follow along.
 | Action | Command |
 |--------|---------|
 | Update all plugins | `:PackUpdate` |
+| Wipe & reinstall plugins | `:PackWipe` (then restart nvim) |
 | Install new plugin | Add `vim.pack.add({ "url" })` to a plugin file, restart |
-| Show notifications | `<Leader>en` |
 | Edit config | `<Leader>ei` |
 
 ### Pre-commit hook
-
-A stylua formatter hook lives at `scripts/pre-commit`.  Activate it once after
-cloning:
 
 ```bash
 git config core.hooksPath scripts
 ```
 
-After that, every `git commit` reformats staged `.lua` files automatically.
+After activation, every `git commit` reformats staged `.lua` files with stylua.
