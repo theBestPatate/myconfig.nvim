@@ -57,12 +57,7 @@ nmap_leader('bw', '<Cmd>lua MiniBufremove.wipeout()<CR>', 'Wipeout')
 -- ==========================================================================
 --  System / Config
 -- ==========================================================================
-nmap_leader('ei', '<Cmd>edit $MYVIMRC<CR>', 'init.lua')
-nmap_leader('ey', '<Cmd>@"<CR>', 'Execute yeeted text')
 nmap_leader('en', '<Cmd>lua MiniNotify.show_history()<CR>', 'Notifications')
-nmap_leader('eq', function()
-  vim.cmd(vim.fn.getqflist({ winid = true }).winid ~= 0 and 'cclose' or 'copen')
-end, 'Quickfix')
 
 -- ==========================================================================
 --  Toggles
@@ -97,6 +92,9 @@ nmap_leader('tn', function()
   end
 end, 'Line numbers')
 nmap_leader('tm', '<Cmd>Markview<CR>', 'Markdown preview')
+nmap_leader('tq', function()
+  vim.cmd(vim.fn.getqflist({ winid = true }).winid ~= 0 and 'cclose' or 'copen')
+end, 'Quickfix')
 nmap_leader('ts', function()
   if vim.o.spelllang == 'en' then
     vim.o.spelllang = 'fr'

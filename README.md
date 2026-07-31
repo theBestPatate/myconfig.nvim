@@ -1,6 +1,6 @@
 # myconfig.nvim
 
-Personal Neovim configuration — rebuilt around [mini.nvim](https://github.com/nvim-mini/mini.nvim)
+My personal Neovim configuration ... rebuilt around [mini.nvim](https://github.com/nvim-mini/mini.nvim)
 and Neovim's native `vim.pack.add()`.
 
 ## Quick Start
@@ -26,7 +26,7 @@ Some plugins need binaries on your `$PATH`.
 | `fzf` | `emerge app-shells/fzf` | `apt install fzf` | fzf-lua binary |
 | `ripgrep` | `emerge sys-apps/ripgrep` | `apt install ripgrep` | fzf-lua live grep |
 | `node` | `emerge net-libs/nodejs` | `apt install nodejs` | vtsls LSP (TypeScript) |
-| Nerd Font | `emerge media-fonts/nerd-fonts` | download from [nerdfonts.com](https://www.nerdfonts.com/) | icons in UI |
+| Nerd Font | `download from [nerdfonts.com](https://www.nerdfonts.com/)` | download from [nerdfonts.com](https://www.nerdfonts.com/) | icons in UI |
 
 ---
 
@@ -78,10 +78,7 @@ Leader key is `<Space>`.
 
 | Key | Action |
 |-----|--------|
-| `<Leader>ei` | Edit `init.lua` |
-| `<Leader>ey` | Execute yanked text |
 | `<Leader>en` | Show notification history |
-| `<Leader>eq` | Toggle quickfix window |
 
 ### Find — `<Leader>f` (fzf-lua)
 
@@ -119,6 +116,7 @@ Leader key is `<Space>`.
 | `<Leader>tg` | Toggle git diff overlay |
 | `<Leader>tm` | Toggle markdown preview (markview) |
 | `<Leader>tn` | Cycle line numbers (off → absolute → relative → off) |
+| `<Leader>tq` | Toggle quickfix window |
 | `<Leader>ts` | Toggle spell language (English ↔ French) |
 
 ### Git
@@ -206,7 +204,6 @@ Each file in `demos/` is a self-contained tutorial. Open it in Neovim and follow
 | Update all plugins | `:PackUpdate` |
 | Wipe & reinstall plugins | `:PackWipe` (then restart nvim) |
 | Install new plugin | Add `vim.pack.add({ "url" })` to a plugin file, restart |
-| Edit config | `<Leader>ei` |
 
 ### Pre-commit hook
 
