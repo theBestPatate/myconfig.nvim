@@ -167,7 +167,7 @@ In visual mode, the selection extends to the match — same as `<Leader>fg`.
 Switch between open buffers with a preview pane.
 
 **Try it**: Open a few files first, then `<Leader>fb`. You'll see a list of all
-buffers with a preview of the highlighted one. `<CR>` to open, `<C-d>` to delete.
+buffers with a preview of the highlighted one. `<CR>` to open.
 
 <!--DEMO
 {

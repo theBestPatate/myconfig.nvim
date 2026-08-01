@@ -7,9 +7,9 @@
 
 ---
 
-## 1. Gitsigns — Gutter Signs & Hunk Navigation
+## 1. mini.diff — Gutter Signs & Hunk Navigation
 
-Gitsigns shows `+`, `~`, `_` in the sign column for added, changed, and deleted lines.
+`mini.diff` shows signs in the sign column for added, changed, and deleted lines.
 
 ### What Are Hunks?
 
@@ -48,11 +48,11 @@ your edits, `]h` takes you straight to each change in order. Before committing,
 quickly review every hunk with `]h` `]h` `]h` — you'll never miss a stray edit
 or debug print again.
 
-### Gitsigns Hunk Actions
+### mini.diff Hunk Actions
 
 | Key | Action |
 |-----|--------|
-| `<Leader>go` | Toggle inline diff overlay (`mini.diff`) |
+| `<Leader>tg` | Toggle inline diff overlay (`mini.diff`) |
 
 ---
 
@@ -95,6 +95,6 @@ Press `<Leader>fG`, type to filter, `<CR>` to open.
 | Key | Action |
 |-----|--------|
 | `]h` / `[h` | Next / previous git hunk |
-| `<Leader>go` | Toggle diff overlay |
+| `<Leader>tg` | Toggle diff overlay |
 | `<Leader>fs` | Git status (fzf-lua, `<Tab>` to stage) |
 | `<Leader>fG` | Git-tracked files (fzf-lua) |

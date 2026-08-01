@@ -6,14 +6,15 @@
 > - `demos/examples/args_demo.lua` — argument swapping
 >
 > This document explains the features; the `.lua` files let you try them live.
-> Press `<Space>` — mini.clue shows `<Leader>l` = `+Language` and `<Leader>c` = `+Code`.
+> Press `<Space>` — mini.clue shows `<Leader>l` = `+Language` and `<Leader>t` = `+Toggle`.
 
 ---
 
 ## 1. LSP — Language Server Protocol
 
 Your config comes with `lua_ls` (Lua), `tinymist` (Typst), `marksman` (Markdown),
-`vtsls` (TypeScript), and more — all auto-installed by Mason.
+`vtsls` (TypeScript), `ruff` (Python), `rust_analyzer` (Rust), `bashls` (Bash),
+`ty` (Ty), `superhtml` (HTML), `oxlint` (JS/TS linting), and more — all auto-installed by Mason.
 
 ### `<Leader>lh` — Hover
 
@@ -82,7 +83,6 @@ with LSP as the source.
 | `<Tab>` | Completion menu open | Select next item |
 | `<S-Tab>` | Completion menu open | Select previous item |
 | `<CR>` | Completion menu open | Accept selected item |
-| `<BS>` | After auto-pair | Delete paired bracket/quote |
 
 **Try it**: In `lsp_demo.lua`, go to the end of the file and type `M.` —
 the completion menu appears with all fields of `M`. Use `<Tab>` / `<S-Tab>`
@@ -90,55 +90,25 @@ to browse, `<CR>` to select.
 
 ---
 
-## 3. Snippets — `mini.snippets`
-
-Pre-defined code templates from `friendly-snippets`. Expand a snippet
-by typing its trigger and pressing `<Tab>`.
-
-**Try it**: In a Lua file, type `fun` then `<Tab>` — it expands into a full
-function template with tab-stops for the name and body.
-
-```lua
--- Type 'fun' below and press <Tab>:
-```
-
-<!--DEMO
-{
-  "steps": [
-    {"desc": "Type 'fun' and press Tab to expand snippet", "keys": "ofun<Tab>", "pause": 2.0},
-    {"desc": "Cancel", "keys": "<Esc>u", "pause": 1.0}
-  ]
-}
--->
-
----
-
-## 4. Autoformatting — conform.nvim
+## 3. Autoformatting — conform.nvim
 
 Formatting runs automatically on save. Conform uses the configured formatters
-per filetype: `stylua` (Lua, via LSP), `black` + `isort` (Python), `prettierd` (web).
+per filetype: `lua_ls` (Lua, via LSP fallback), `black` + `isort` (Python), `prettierd` (web).
 
-### `<Leader>cf` / `<Leader>cF` — Toggle Formatting
+### `<Leader>tf` / `<Leader>tF` — Toggle Formatting
 
 | Key | Scope |
 |-----|-------|
-| `<Leader>cf` | Toggle autoformat for **current buffer** |
-| `<Leader>cF` | Toggle autoformat **globally** |
+| `<Leader>tf` | Toggle autoformat for **current buffer** |
+| `<Leader>tF` | Toggle autoformat **globally** |
 
-**Try it**: Press `<Leader>cf` to disable formatting in this buffer.
-Make some messy indentation, save — it stays. Press `<Leader>cf` again
+**Try it**: Press `<Leader>tf` to disable formatting in this buffer.
+Make some messy indentation, save — it stays. Press `<Leader>tf` again
 to re-enable, save — it snaps back.
-
-### Disable by default for a filetype
-
-```lua
--- In your config:
--- local disable_filetypes = { c = true, cpp = true }
-```
 
 ---
 
-## 5. Arguments Swap — `(` / `)`
+## 4. Arguments Swap — `)` / `(` and `<Leader>a` / `<Leader>A`
 
 Swap the argument under cursor with the next or previous one. Works anywhere
 inside a function call or definition — cursor just needs to be on a parameter.
@@ -147,6 +117,8 @@ inside a function call or definition — cursor just needs to be on a parameter.
 |-----|--------|
 | `)` | Swap with next argument (right) |
 | `(` | Swap with previous argument (left) |
+| `<Leader>a` | Swap with next argument (right) |
+| `<Leader>A` | Swap with previous argument (left) |
 
 **How it works**: Uses treesitter to identify the parameter node under cursor,
 then swaps it with the adjacent one. Stays in normal mode — no insert mode
@@ -166,7 +138,7 @@ press `)` — it swaps with `5432`. Press `(` to swap back.
 
 ---
 
-## 6. Auto-pairs — `mini.pairs`
+## 5. Auto-pairs — `mini.pairs`
 
 Brackets, quotes, and parentheses auto-close. Press `<BS>` inside an
 empty pair to delete both characters.
@@ -197,18 +169,17 @@ Press `<BS>` inside the empty braces to delete both at once.
 | `<Tab>` | Next completion item |
 | `<S-Tab>` | Previous completion item |
 | `<CR>` | Accept completion |
-| `<BS>` | Delete paired bracket |
 
-### Formatting (`<Leader>c`)
+### Formatting (`<Leader>t`)
 
 | Key | Action |
 |-----|--------|
-| `cf` | Toggle autoformat (buffer) |
-| `cF` | Toggle autoformat (global) |
+| `tf` | Toggle autoformat (buffer) |
+| `tF` | Toggle autoformat (global) |
 
 ### Arguments
 
 | Key | Action |
 |-----|--------|
-| `)` | Swap with next argument |
-| `(` | Swap with previous argument |
+| `)` / `<Leader>a` | Swap with next argument |
+| `(` / `<Leader>A` | Swap with previous argument |

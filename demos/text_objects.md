@@ -1,18 +1,18 @@
-# Treesitter Text Objects — Interactive Tutorial
+# Treesitter Text Objects -> Interactive Tutorial
 
 This file is vimtutor but for text-objects. Open it in Neovim, move your cursor onto any code
 block, and try the commands described above it. Each section explains one
 feature and gives you real code to practice on.
 
-Prerequisites: parsers installed for Python and Lua (both ship with this config).
-Open this file, then `:set filetype=python` to activate Python treesitter for
-the Python blocks, or use the dedicated Lua block at the end.
+Prerequisites: parsers installed for Python and Lua (both ship with this config and are installed on startup).
 
-> Tip: to reset after experimenting, just undo with `u`.
+Sad statement (... yes, I intentionally wrote this, this is not AI.)
+Unfortunately, as things stand currently, not all text-objects work directly inside markdown code blocks. The most reliable way to test them is to copy the code block into an external buffer — e.g. `:e test.py`, paste the section there. I'm working on making this more convenient. For text-objects that don't work in markdown, I will warn you so you don't think your config is broken. Have fun :)
+
 
 ---
 
-## 1. Select — text objects in visual / operator-pending mode
+## 1. Select -> text objects in visual / operator-pending mode
 
 Text objects work in two contexts:
 - **Visual mode** (`v`, `V`, `<C-v>`): select first, then act.
@@ -20,8 +20,8 @@ Text objects work in two contexts:
 
 ### Functions  `af` / `if`
 
-`af` — **a function** (entire definition including signature)
-`if` — **inner function** (body only, no signature line)
+`af` -> **a function** (entire definition including signature)
+`if` -> **inner function** (body only, no signature line)
 
 ```python
 def greet(name, greeting="Hello"):
@@ -34,18 +34,23 @@ def farewell(name):
     print(f"Goodbye, {name}!")
 ```
 
+> Tip: to reset after experimenting, just undo with `u`.
+
 Exercises:
-- Put cursor anywhere inside `greet`. Press `vaf` — the whole function is selected.
-- Press `vif` — only the body (the three indented lines) is selected.
-- Put cursor on `farewell`. Press `daf` — delete the entire function.
-- Press `cif` on `greet` — replace just the body, leaving `def greet(...):` intact.
+- Put cursor anywhere inside `greet`.
+    - Press `vaf` -> the whole function is selected.
+    - Press `vif` -> only the body (the three indented lines) is selected.
+- Put cursor on `farewell`.
+    - Press `daf` -> delete the entire function.
+    - Press `cif` on `farewell` -> replace just the body, leaving `def farewell(name):` intact.
 
 ---
 
 ### Classes  `ac` / `ic`
+@Python stuff, Open a python buffer
 
-`ac` — **a class** (entire class block)
-`ic` — **inner class** (everything inside, excluding the `class` line itself)
+`ac` -> **a class** (entire class block)
+`ic` -> **inner class** (everything inside, excluding the `class` line itself)
 
 ```python
 class Animal:
@@ -64,40 +69,18 @@ class Dog(Animal):
 ```
 
 Exercises:
-- Cursor anywhere in `Dog`. Press `vac` — selects the whole `Dog` class.
-- Press `vic` — selects everything inside `Dog` (the method, not the `class` line).
-- Press `yac` on `Animal` — yank the whole class so you can paste a copy.
-
----
-
-### Parameters  `aa` / `ia`
-
-> **Note:** Parameter text objects require `:set ft=python` to work, as they depend
-> on the Python treesitter parser being active.
-
-`aa` — **an argument** (includes the surrounding comma/whitespace)
-`ia` — **inner argument** (the value only)
-
-```python
-def configure(host, port=8080, debug=False, timeout=30):
-    pass
-
-
-result = configure("localhost", port=9000, debug=True, timeout=60)
-```
-
-Exercises:
-- Put cursor on `port=8080` in the function definition. Press `via` — selects `port=8080`.
-- Press `daa` — deletes the argument AND the trailing comma, leaving clean syntax.
-- Put cursor on `9000` in the call. Press `cia` — change just the value.
-- Press `vaa` on `debug=True` in the call — selects it with its comma.
+- Cursor anywhere in `Dog`.
+    - Press `vac` -> selects the whole `Dog` class.
+    - Press `vic` -> selects everything inside `Dog` (the method, not the `class` line).
+    - Press `yac` on `Animal` -> yank the whole class so you can paste a copy.
 
 ---
 
 ### Conditionals  `ai` / `ii`
+@Python stuff, Open a python buffer
 
-`ai` — **a conditional** (entire if/elif/else block)
-`ii` — **inner conditional** (body only)
+`ai` -> **a conditional** (entire if/elif/else block)
+`ii` -> **inner conditional** (body only)
 
 ```python
 def categorize(score):
@@ -114,16 +97,17 @@ def categorize(score):
 ```
 
 Exercises:
-- Cursor on `if score >= 90:`. Press `vii` — selects the two lines inside that branch.
-- Press `vai` — selects the entire if/elif/else chain.
-- Press `dii` — delete the body of the branch your cursor is in, keep the condition.
+- Cursor on `if score >= 90:`. Press `vii` -> selects the two lines inside that branch.
+- Press `vai` -> selects the entire if/elif/else chain.
+- Press `dii` -> delete the body of the branch your cursor is in, keep the condition.
 
 ---
 
 ### Loops  `al` / `il`
+@Python stuff, Open a python buffer
 
-`al` — **a loop** (for/while including the header line)
-`il` — **inner loop** (body only)
+`al` -> **a loop** (for/while including the header line)
+`il` -> **inner loop** (body only)
 
 ```python
 def process_items(items):
@@ -143,17 +127,18 @@ def count_down(n):
 ```
 
 Exercises:
-- Cursor inside the `for` loop body. Press `vil` — selects the loop body.
-- Press `val` — selects the whole `for` block including the header.
-- Press `dal` on the `while` loop — deletes the entire loop.
-- Press `>il` on the `for` loop — indent the loop body one level.
+- Cursor inside the `for` loop body. Press `vil` -> selects the loop body.
+- Press `val` -> selects the whole `for` block including the header.
+- Press `dal` on the `while` loop -> deletes the entire loop.
+- Press `>il` on the `for` loop -> indent the loop body one level.
 
 ---
 
 ### Blocks  `ab` / `ib`
+@Python stuff, Open a python buffer
 
-`ab` — **a block** (any syntactic block: function body, if body, with body...)
-`ib` — **inner block** (same, slightly tighter — language dependent)
+`ab` -> **a block** (any syntactic block: function body, if body, with body...)
+`ib` -> **inner block** (same, slightly tighter -> language dependent)
 
 ```python
 def heavy_task():
@@ -171,16 +156,17 @@ def heavy_task():
 ```
 
 Exercises:
-- Cursor inside the `with` block. Press `vab` — selects the with block.
-- Cursor inside the `try` block. Press `dib` — delete contents of just the `try`.
-- Press `yab` on the `finally` block — yank the entire block.
+- Cursor inside the `with` block. Press `vab` -> selects the with block.
+- Cursor inside the `try` block. Press `dib` -> delete contents of just the `try`.
+- Press `yab` on the `finally` block -> yank the entire block.
 
 ---
 
 ### Calls  `aC` / `iC`
+@Python stuff, Open a python buffer
 
-`aC` — **a call** (entire function call expression)
-`iC` — **inner call** (the argument list only, inside the parentheses)
+`aC` -> **a call** (entire function call expression)
+`iC` -> **inner call** (the argument list only, inside the parentheses)
 
 ```python
 output = sorted(filter(lambda x: x > 0, raw_data), key=lambda x: -x)
@@ -191,17 +177,17 @@ result = max(len(output), len(raw_data))
 ```
 
 Exercises:
-- Cursor on `filter(...)`. Press `viC` — selects everything inside the parens.
-- Press `vaC` — selects the whole `filter(...)` call.
-- Press `ciC` on `repr(output)` — change the argument to something else.
-- Press `daC` on `len(raw_data)` inside `max(...)` — removes that argument.
+- Cursor on `filter(...)`. Press `viC` -> selects everything inside the parens.
+- Press `vaC` -> selects the whole `filter(...)` call.
+- Press `ciC` on `repr(output)` -> change the argument to something else.
+- Press `daC` on `len(raw_data)` inside `max(...)` -> removes that argument.
 
 ---
 
 ## 2. Combining objects with operators
 
 You can pair any text object with any operator. The pattern is always:
-`{operator}{object}` — e.g. `daf` = "delete a function", `yic` = "yank inner class".
+`{operator}{object}` -> e.g. `daf` = "delete a function", `yic` = "yank inner class".
 
 | Operator | Action | Mnemonic |
 |----------|--------|----------|
@@ -211,7 +197,7 @@ You can pair any text object with any operator. The pattern is always:
 | `>` | indent right | shift right |
 | `<` | indent left | shift left |
 | `=` | auto-indent / format | **=** lign |
-| `gq` | reflow / wrap text | **g**o **q**uiet |
+| `gq` | format lines | **g** **q** (format) |
 | `gu` | lowercase | **gu** (go under) |
 | `gU` | uppercase | **gU** (go upper) |
 | `v` | visually select | **v**isual |
@@ -233,13 +219,13 @@ def main():
     print(a + b)
 ```
 
-Exercises — put cursor at the very start of `helper_one`:
-- `>af` — indent the entire `helper_one` function right.
-- `<af` — indent it back left.
-- `=af` — auto-indent the entire function.
-- `yaf` — yank the whole function, then `p` to paste a copy somewhere.
-- `daf` — delete the whole function.
-- `gqaf` — reflow/rewrap the function body (useful for comments or long lines).
+Exercises -> put cursor at the very start of `helper_one`:
+- `>af` -> indent the entire `helper_one` function right.
+- `<af` -> indent it back left.
+- `=af` -> auto-indent the entire function.
+- `yaf` -> yank the whole function, then `p` to paste a copy somewhere.
+- `daf` -> delete the whole function.
+- `gqaf` -> format the function body (respects `formatexpr`/`formatprg`; see `:help gq`).
 
 ---
 
@@ -283,10 +269,10 @@ return M
 ```
 
 Exercises:
-- `vaf` on `M.setup` — selects the whole function.
-- `daf` on `internal_helper` — deletes the entire function.
-- `vii` on the first `if` inside `internal_helper` — selects the inner condition.
-- `val` on the `for` loop — selects the entire loop.
+- `vaf` on `M.setup` -> selects the whole function.
+- `daf` on `internal_helper` -> deletes the entire function.
+- `vii` on the first `if` inside `internal_helper` -> selects the inner condition.
+- `val` on the `for` loop -> selects the entire loop.
 
 ---
 
@@ -314,23 +300,23 @@ Exercises:
 | `>` | indent right |
 | `<` | indent left |
 | `=` | auto-indent |
-| `gq` | reflow text |
+| `gq` | format lines |
 | `gu` / `gU` | lower / uppercase |
 
-> Combine: `{operator}{object}` — e.g. `daf`, `>if`, `yac`, `=ii`.
+> Combine: `{operator}{object}` -> e.g. `daf`, `>if`, `yac`, `=ii`.
 
 ---
 
-## 3. Argument swap — `<leader>a` / `<leader>A`
+## 3. Argument swap -> `<leader>a` / `<leader>A`
 
 Swap the function argument under (or nearest to) the cursor with the
 next or previous argument. Works on both function definitions and calls.
 
-- `<leader>a` — swap current argument with the **next** one
-- `<leader>A` — swap current argument with the **previous** one
+- `<leader>a` -> swap current argument with the **next** one
+- `<leader>A` -> swap current argument with the **previous** one
 
 The implementation finds the nearest `@parameter.inner` node if the cursor
-isn't directly on one — more forgiving than the treesitter-textobjects swap.
+isn't directly on one -> more forgiving than the treesitter-textobjects swap.
 
 ```python
 def connect(host, port, user, password, timeout=30):
@@ -340,21 +326,102 @@ connect("db.local", 5432, "admin", "secret", timeout=10)
 ```
 
 Exercises:
-- Cursor on `port` in the definition. Press `<leader>a` — `port` and `user` swap.
-- Cursor anywhere between `5432` and `"admin"`. Press `<leader>a` — still works.
+- Cursor on `port` in the definition. Press `<leader>a` -> `port` and `user` swap.
+- Cursor anywhere between `5432` and `"admin"`. Press `<leader>a` -> still works.
 - Press `<leader>A` after a swap to swap back.
 
 ---
 
-## 4. Working inside code blocks — `:CodeBlockEdit`
+## 4. Vim native text-objects
 
-When you're inside a Python code block in this markdown file and want full
-language support (text objects, LSP, completion, formatting), use
-`:CodeBlockEdit` to dive into the code block in a dedicated buffer.
+These are built into Neovim — no treesitter required. Same operator-pending / visual mode rules apply.
 
-- `:CodeBlockEdit` — open the code block under cursor in a horizontal split
-- `:CodeBlockEdit!` — open in a vertical split
-- `:w` in the child buffer — writes changes back to the original document
+### Words  `aw` / `iw`  and  `aW` / `iW`
 
-This gives you a real Python buffer where everything works natively —
-no injection limitations, no cursor precision issues.
+| Key | Object | Boundaries |
+|-----|--------|------------|
+| `iw` | **inner word** | letters, digits, underscores (`iskeyword`) |
+| `aw` | **a word** | like `iw` + trailing whitespace/punctuation |
+| `iW` | **inner WORD** | non-whitespace (space-delimited) |
+| `aW` | **a WORD** | like `iW` + trailing whitespace |
+
+```
+this is_a "weird" example.with.dots
+```
+
+Exercises:
+- Cursor on `is_a`. Press `viw` -> selects `is_a`.
+- Press `vaw` -> selects `is_a` plus the trailing space.
+- Cursor on `"weird"`. Press `viW` -> selects `"weird"` (quotes included, no whitespace).
+- Press `ciW` -> change the whole quoted token.
+
+### Sentences  `as` / `is`
+
+```txt
+First sentence. Second sentence with, commas. Third!
+```
+
+Exercises:
+- Cursor anywhere in the first sentence. `vis` -> selects "First sentence."
+- `das` -> deletes the entire sentence including trailing space.
+
+### Paragraphs  `ap` / `ip`
+
+Paragraphs are delimited by blank lines. `ip` is the content between blanks; `ap` includes the trailing blank line.
+
+As a matter of fact you can use this section.
+
+### Quotes  `a"` / `i"`  and  `a'` / `i'`
+
+Text objects for quoted strings. Use the quote character as the object key.
+
+```
+name = "hello world"
+path = '/usr/local/bin'
+```
+
+Exercises:
+- Cursor inside the double-quoted string. `vi"` -> selects `hello world` (no quotes).
+- `va"` -> selects `"hello world"` (quotes included).
+- `ci"` -> change the contents of the string.
+- Cursor inside the single-quoted string. `vi'` -> selects `/usr/local/bin`.
+
+### Brackets  `a)` / `i)`  ( `a]`, `a}`, `a>`, `a"`, `a'` ...)
+
+Works for `()`, `[]`, `{}`, `<>`, `""`, `''`, backticks. `i` = inside, `a` = including the delimiters.
+
+```python
+result = func(arg1, (nested + 1), arg3)
+data = {"key": [1, 2, "three"]}
+```
+
+Exercises:
+- Cursor inside `(nested + 1)`. `vi)` or `vi(` -> selects `nested + 1`.
+- `va)` -> selects `(nested + 1)` with parens.
+- Cursor inside `[1, 2, "three"]`. `vi]` -> selects contents. `da]` -> deletes the whole list.
+- Cursor on the `{` brace. `va}` -> selects the whole dict literal.
+
+### Tag blocks  `at` / `it`  (HTML/XML/JSX/etc.)
+
+Mainly active when `ft=html`, `ft=xml`, or similar. `it` = tag contents, `at` = including the opening/closing tags. (But it will work in the html code block below somehow)
+
+```html
+<div class="outer">
+  <p>First paragraph</p>
+  <span>inner text</span>
+</div>
+```
+
+Exercises:
+- Cursor inside the `<p>` element. `vit` -> selects `First paragraph`.
+- `vat` -> selects the entire `<p>First paragraph</p>` element.
+
+> **When to use which:** Treesitter objects (`af`/`if`, `ac`/`ic`, etc.) understand
+> language structure. Native objects (`aw`/`iw`, `a"`/`i"`, `ap`/`ip`) work everywhere,
+> on any filetype. 
+
+---
+
+## 5. Working inside code blocks -> `:CodeBlockEdit`
+
+I will be updating this section soon. I still need more work on CodeBlockEdit.
