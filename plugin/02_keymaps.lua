@@ -170,6 +170,18 @@ nmap('[h', function()
 end, 'Previous git hunk')
 
 -- ==========================================================================
+--  Readline-like shortcuts in insert mode
+-- ==========================================================================
+-- Ctrl+W (delete word backward), Ctrl+U (kill line), Ctrl+H (backspace)
+-- already work by default.
+-- Ctrl+A, Ctrl+E, Ctrl+K conflict with nvim defaults and are left alone.
+vim.keymap.set('i', '<C-b>', '<Left>', { desc = 'Back char' })
+vim.keymap.set('i', '<C-f>', '<Right>', { desc = 'Forward char' })
+vim.keymap.set('i', '<A-b>', '<C-o>b', { desc = 'Back word' })
+vim.keymap.set('i', '<A-f>', '<C-o>w', { desc = 'Forward word' })
+vim.keymap.set('i', '<A-d>', '<C-o>dw', { desc = 'Delete word forward' })
+
+-- ==========================================================================
 --  Plugin-dependent keymaps (registered after plugins load)
 -- ==========================================================================
 later(function()
