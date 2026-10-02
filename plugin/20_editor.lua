@@ -255,6 +255,12 @@ end)
 later(function()
   vim.pack.add { 'https://github.com/stevearc/conform.nvim' }
 
+  -- Python is formatted and import-sorted by ruff only, using the same
+  -- project-local binary as the LSP (see lua/local/ruff.lua). Do NOT add
+  -- standalone isort/black here: their defaults (line-length, wrap style)
+  -- drift from ruff's and fight the ruff LSP's I001 diagnostic.
+  local ruff = require 'local.ruff'
+
   require('conform').setup {
     notify_on_error = false,
     default_format_opts = {
@@ -267,13 +273,25 @@ later(function()
       return { timeout_ms = 500, lsp_fallback = true }
     end,
     formatters_by_ft = {
-      python = { 'black', 'isort' },
+      python = { 'ruff_format', 'ruff_organize_imports' },
       html = { 'prettierd' },
       javascript = { 'prettierd' },
       typescript = { 'prettierd' },
       typescriptreact = { 'prettierd' },
       javascriptreact = { 'prettierd' },
       css = { 'prettierd' },
+    },
+    formatters = {
+      ruff_format = {
+        command = function(_, ctx)
+          return ruff.bin(ctx.dirname)
+        end,
+      },
+      ruff_organize_imports = {
+        command = function(_, ctx)
+          return ruff.bin(ctx.dirname)
+        end,
+      },
     },
   }
 
