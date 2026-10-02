@@ -313,6 +313,15 @@ later(function()
   -- Conform toggle keymaps are in 02_keymaps.lua under <Leader>t
 end)
 
+-- Wire vim's built-in gq operator to conform.format so `gqq`, `gqip`, etc.
+-- trigger the configured formatter instead of doing nothing.
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'rust', 'python', 'javascript', 'typescript', 'css', 'html' },
+  callback = function(args)
+    vim.bo[args.buf].formatexpr = "v:lua.require'conform'.formatexpr()"
+  end,
+})
+
 -- 4. Nvim-surround — add/change/delete surrounding pairs -----------------
 later(function()
   vim.pack.add { 'https://github.com/kylechui/nvim-surround' }
