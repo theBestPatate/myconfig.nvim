@@ -29,6 +29,11 @@
 
 local now_if_args, _ = Config.now_if_args, Config.later
 
+-- Custom fenced-code aliases: ```manim blocks |just python
+vim.treesitter.language.register('python', 'manim')
+-- Legacy vim-syntax fallback (e.g. when treesitter is off).
+vim.g.markdown_fenced_languages = { 'manim=python' }
+
 -- 1. Treesitter ==============================================================
 now_if_args(function()
   Config.on_packchanged('nvim-treesitter', { 'update' }, function()
@@ -144,7 +149,7 @@ for name, cfg in pairs(servers) do
   vim.lsp.enable(name)
 end
 
--- LSP keymaps (<leader>la, <leader>ld, …) are in 02_keymaps.lua
+-- LSP keymaps (<leader>la, <leader>ld, ...) are in 02_keymaps.lua
 
 -- 3. Autocompletion =======================================================
 now_if_args(function()
