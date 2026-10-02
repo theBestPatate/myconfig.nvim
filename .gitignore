@@ -17,6 +17,11 @@
 !after/
 !after/**
 
+# Lua modules 
+!lua/
+!lua/local/
+!lua/local/**
+
 # Demos
 !demos/
 !demos/**
