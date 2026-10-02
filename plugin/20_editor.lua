@@ -280,6 +280,7 @@ later(function()
       typescriptreact = { 'prettierd' },
       javascriptreact = { 'prettierd' },
       css = { 'prettierd' },
+      rust = { 'rustfmt', 'rust_analyzer' },
     },
     formatters = {
       ruff_format = {

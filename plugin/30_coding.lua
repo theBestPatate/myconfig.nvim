@@ -108,7 +108,6 @@ require('mason').setup {
     'bash-language-server',
     'lua-language-server',
     'marksman',
-    'rust-analyzer',
     'stylua',
     'tinymist',
     'ty',
