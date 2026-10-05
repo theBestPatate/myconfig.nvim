@@ -224,7 +224,7 @@ return {
         marksman = {},
         bashls = {},
         ruff = {},
-        jedi_language_server = {},
+        pyrefly = {},
         -- basedpyright = {},
         rust_analyzer = {},
         eslint = {},
@@ -273,7 +273,7 @@ return {
         'bashls',
         'marksman',
         'ruff',
-        'jedi_language_server',
+        'pyrefly',
         -- 'basedpyright',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
